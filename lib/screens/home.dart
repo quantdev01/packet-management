@@ -1,6 +1,4 @@
 import 'package:entree_sortie/screens/admin_login.dart';
-import 'package:entree_sortie/screens/register_packet.dart';
-import 'package:entree_sortie/screens/retrieve_packet.dart';
 import 'package:entree_sortie/screens/user_login.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';

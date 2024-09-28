@@ -3,14 +3,14 @@ import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class RegisterPacket extends StatefulWidget {
-  const RegisterPacket({super.key});
+class AddPacket extends StatefulWidget {
+  const AddPacket({super.key});
 
   @override
-  State<RegisterPacket> createState() => _RegisterPacketState();
+  State<AddPacket> createState() => _AddPacketState();
 }
 
-class _RegisterPacketState extends State<RegisterPacket> {
+class _AddPacketState extends State<AddPacket> {
   TextEditingController controllerId = TextEditingController();
   TextEditingController controllerPacketName = TextEditingController();
   int ltaNumber = 0;
@@ -84,7 +84,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
                 height: kBoxHeight,
                 width: kBoxWidht,
                 textColor: kWhiteColor,
-                text: 'Suivant',
+                text: 'Ajouter',
                 textSize: kSizeTextBox,
               ),
             ),
