@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "715844543626",
+    "project_id": "packet-management",
+    "storage_bucket": "packet-management.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715844543626:android:656b5bd8babe6adba17973",
+        "android_client_info": {
+          "package_name": "com.packetmanagement000.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzs9mDfzK_--nNZ6RINFnNrBX5_u4chIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
