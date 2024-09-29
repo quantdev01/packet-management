@@ -44,10 +44,13 @@ class _AddPacketState extends State<AddPacket> {
 
   @override
   Widget build(BuildContext context) {
-    Widget addPacket(String name, String weight) => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text(name), Text(weight)],
-        );
+    Widget addPacket(String name, String weight) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [Text(name), Text(weight)],
+      );
+    }
+
     List<Widget> packetsList = [];
 
     return Scaffold(
@@ -241,14 +244,4 @@ class _AddPacketState extends State<AddPacket> {
       ),
     ));
   }
-}
-
-class AddPacketNew {
-  final String packetName;
-  final String totalWeight;
-
-  AddPacketNew({
-    required this.packetName,
-    required this.totalWeight,
-  });
 }
