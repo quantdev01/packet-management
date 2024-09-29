@@ -1,4 +1,4 @@
-import 'package:entree_sortie/screens/menu.dart';
+import 'package:entree_sortie/screens/home.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -117,7 +117,7 @@ Widget backToMenuButton(BuildContext context) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const Menu(),
+                builder: (context) => const Home(),
               ),
             );
           },

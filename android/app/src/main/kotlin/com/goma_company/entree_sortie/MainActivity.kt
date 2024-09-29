@@ -1,4 +1,4 @@
-package com.goma_company.entree_sortie
+package com.packetmanagement000.app
 
 import io.flutter.embedding.android.FlutterActivity
 

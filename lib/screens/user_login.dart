@@ -1,4 +1,4 @@
-import 'package:entree_sortie/screens/menu.dart';
+import 'package:entree_sortie/screens/home.dart';
 import 'package:entree_sortie/screens/register_packet.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
@@ -78,7 +78,7 @@ class UserLogin extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Menu(),
+                        builder: (context) => const Home(),
                       ),
                     );
                   } else if (controllerUsername.text == '' ||

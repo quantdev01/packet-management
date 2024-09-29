@@ -1,3 +1,4 @@
+import 'package:entree_sortie/screens/add_packet.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class RegisterPacket extends StatefulWidget {
 }
 
 class _RegisterPacketState extends State<RegisterPacket> {
-  TextEditingController controllerId = TextEditingController();
+  TextEditingController controllerLtaNumber = TextEditingController();
   TextEditingController controllerPacketName = TextEditingController();
   int ltaNumber = 0;
 
@@ -48,7 +49,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
             ),
             const SizedBox(height: 30),
             myTextField(
-              controller: controllerId,
+              controller: controllerLtaNumber,
               height: kBoxHeight,
               width: kBoxWidht,
               textSize: kSizeTextBox,
@@ -69,15 +70,15 @@ class _RegisterPacketState extends State<RegisterPacket> {
             const SizedBox(height: 30),
             GestureDetector(
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Enregistrez avec success'),
-                    backgroundColor: Colors.green, // Warning color
-                    duration: Duration(seconds: 2), // Duration of SnackBar
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddPacket(
+                      ltaNumber: controllerLtaNumber.text,
+                      clientName: controllerPacketName.text,
+                    ),
                   ),
                 );
-                controllerId.text = '';
-                controllerPacketName.text = '';
               },
               child: myButton(
                 buttonColor: kBlueColor,

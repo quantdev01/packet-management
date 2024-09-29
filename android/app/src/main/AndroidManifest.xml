@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.packetmanagement000.app">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:label="entree_sortie"
         android:name="${applicationName}"

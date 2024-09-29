@@ -14,6 +14,10 @@ kTextStyleButtons(
 const kSizeTextBox = 20.0;
 const kSizeNormalText = 35.0;
 const kSizeTextBoxMobile = kSizeTextBox - 5.0;
+const kTextStyleNormal = TextStyle(
+  fontSize: 25,
+  color: Colors.black87,
+);
 
 const Color kBlueColor = Color.fromARGB(255, 0, 75, 172);
 const Color kRedColor = Color.fromARGB(255, 172, 0, 0);

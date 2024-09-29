@@ -1,11 +1,13 @@
 import 'package:entree_sortie/firebase_options.dart';
 import 'package:entree_sortie/screens/home.dart';
+import 'package:entree_sortie/screens/home_mobile.dart';
 import 'package:entree_sortie/screens/register_packet.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -26,9 +28,9 @@ class Main extends StatelessWidget {
       home: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > 1200) {
-            return const Home();
-          } else if (constraints.maxHeight < 1200) {
             return const RegisterPacket();
+          } else if (constraints.maxHeight < 1200) {
+            return const HomeMobile();
           } else {
             return const Home();
           }
