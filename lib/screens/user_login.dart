@@ -1,4 +1,3 @@
-import 'package:entree_sortie/screens/home.dart';
 import 'package:entree_sortie/screens/register_packet.dart';
 import 'package:entree_sortie/screens/search_packet.dart';
 import 'package:entree_sortie/utils/constant.dart';
@@ -28,6 +27,7 @@ class UserLogin extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              backToPrevious(context),
               title(text: 'Se connecter/Utilisateur'),
               const SizedBox(height: 30),
               myTextField(

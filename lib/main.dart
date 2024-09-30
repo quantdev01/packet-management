@@ -28,7 +28,7 @@ class Main extends StatelessWidget {
       home: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > 1200) {
-            return const SearchPacket();
+            return const Home();
           } else if (constraints.maxHeight < 1200) {
             return const HomeMobile();
           } else {

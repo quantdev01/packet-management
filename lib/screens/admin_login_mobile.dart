@@ -1,3 +1,4 @@
+import 'package:entree_sortie/screens/search_packet.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,9 @@ class AdminLoginMobile extends StatelessWidget {
         backgroundColor: kBlueColor,
         title: const Text(
           'Connectez-vous/Admin',
-          style: TextStyle(fontFamily: 'Condensed'),
+          style: TextStyle(
+            color: kWhiteColor,
+          ),
         ),
       ),
       body: Expanded(
@@ -54,13 +57,53 @@ class AdminLoginMobile extends StatelessWidget {
                 controller: controllerPassword,
               ),
               const SizedBox(height: 30),
-              myButton(
-                buttonColor: kBlueColor,
-                textColor: kWhiteColor,
-                text: 'Se connecter',
-                height: kBoxHeightMobile,
-                width: kBoxWidhtMobile,
-                textSize: kSizeTextBoxMobile,
+              GestureDetector(
+                onTap: () {
+                  if (controllerUsername.text == 'admin' &&
+                      controllerPassword.text == 'password') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Connexion'),
+                        backgroundColor: Colors.green, // Warning color
+                        duration: Duration(seconds: 1), // Duration of SnackBar
+                      ),
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SearchPacket(),
+                      ),
+                    );
+                  } else if (controllerUsername.text == '' ||
+                      controllerPassword.text == '') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('Nom d\'utilisateur ou mot de passe vide'),
+                        backgroundColor: Colors.orange, // Warning color
+                        duration: Duration(seconds: 2), // Duration of SnackBar
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Nom d\'utilisateur ou mot de passe incorrect'),
+                        backgroundColor: Colors.red, // Warning color
+
+                        duration: Duration(seconds: 2), // Duration of SnackBar
+                      ),
+                    );
+                  }
+                },
+                child: myButton(
+                  buttonColor: kBlueColor,
+                  textColor: kWhiteColor,
+                  text: 'Se connecter',
+                  height: kBoxHeightMobile,
+                  width: kBoxWidhtMobile,
+                  textSize: kSizeTextBoxMobile,
+                ),
               ),
             ],
           ),

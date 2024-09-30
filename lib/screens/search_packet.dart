@@ -18,39 +18,35 @@ class _SearchPacketState extends State<SearchPacket> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 200,
-        leadingWidth: double.infinity,
-        title: Container(
-          height: 200,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(kBackgroundImage),
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-          child: Column(
-            children: [
-              backToMenuButton(context),
-              const Center(
-                child: Text(
-                  'Rechereche un colis',
-                  style: TextStyle(
-                    fontSize: ksizeTitle,
-                    color: kWhiteColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                height: 200,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(kBackgroundImage),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    backToMenuButton(context),
+                    const Center(
+                      child: Text(
+                        'Rechereche un colis',
+                        style: TextStyle(
+                          fontSize: ksizeTitle,
+                          color: kWhiteColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 30),
               TextField(
                 controller: controllerSearch,
@@ -129,7 +125,7 @@ class _SearchPacketState extends State<SearchPacket> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Products for Client ID: $clientId"),
+          title: Text("Colis du client $clientId"),
           content: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('clients')
@@ -143,7 +139,7 @@ class _SearchPacketState extends State<SearchPacket> {
 
               if (!productSnapshot.hasData ||
                   productSnapshot.data!.docs.isEmpty) {
-                return const Text('No products found.');
+                return const Text('Aucun Produit trouver');
               }
 
               final products = productSnapshot.data!.docs;
@@ -159,7 +155,7 @@ class _SearchPacketState extends State<SearchPacket> {
                     return ListTile(
                       title: Text(productData['name']),
                       subtitle: Text(
-                          'Weight: ${productData['weight']}kg, Price: ${productData['total_price']}€'),
+                          'Poid: ${productData['weight']}kg, Prix: ${productData['total_price']}\$'),
                     );
                   },
                 ),
@@ -176,77 +172,4 @@ class _SearchPacketState extends State<SearchPacket> {
       },
     );
   }
-  // body: SingleChildScrollView(
-  //   child: Center(
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         const SizedBox(height: 30),
-  //         TextField(
-  //           onChanged: (value) {
-  //             item = value;
-  //           },
-  //           decoration: InputDecoration(
-  //             prefixIcon: Icon(
-  //               FontAwesomeIcons.magnifyingGlass,
-  //             ),
-  //             hintText: 'Search item',
-  //           ),
-  //         ),
-  //         const SizedBox(height: 30),
-  //         StreamBuilder(
-  //           stream: FirebaseFirestore.instance.doc('clients').snapshots(),
-  //           builder: (context, snapshot) {
-  //             return (snapshot.connectionState == ConnectionState.waiting)
-  //                 ? Center(
-  //                     child: CircularProgressIndicator(),
-  //                   )
-  //                 : ListView.builder(
-  //                     itemCount: snapshot.data!.data()?.length,
-  //                     itemBuilder: (context, index) {
-  //                       var data = snapshot.data![index].data()
-  //                           as Map<String, dynamic>;
-
-  //                       if (item.isEmpty) {
-  //                         return ListTile(
-  //                           title: Text(
-  //                             '${data['lta_number']}  ${data['name']}',
-  //                             style: TextStyle(fontSize: kDefaultFontSize),
-  //                             maxLines: 1,
-  //                             overflow: TextOverflow.ellipsis,
-  //                           ),
-  //                           subtitle: Text(
-  //                             '${data['total_to_pay']}\$',
-  //                             maxLines: 1,
-  //                             style: TextStyle(fontSize: 30),
-  //                           ),
-  //                         );
-  //                       }
-
-  //                       if (data['name']
-  //                           .toString()
-  //                           .startsWith(item.toLowerCase())) {
-  //                         return ListTile(
-  //                           title: Text(
-  //                             '${data['lta_number']}  ${data['name']}',
-  //                             style: TextStyle(fontSize: kDefaultFontSize),
-  //                             maxLines: 1,
-  //                             overflow: TextOverflow.ellipsis,
-  //                           ),
-  //                           subtitle: Text(
-  //                             '${data['total_to_pay']}\$',
-  //                             maxLines: 1,
-  //                             style: TextStyle(fontSize: 30),
-  //                           ),
-  //                         );
-  //                       }
-  //                       return Container();
-  //                     },
-  //                   );
-  //           },
-  //         )
-  //       ],
-  //     ),
-  //   ),
-  // ),
 }

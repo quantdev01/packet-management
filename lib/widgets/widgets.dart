@@ -131,3 +131,24 @@ Widget backToMenuButton(BuildContext context) {
     ),
   );
 }
+
+Widget backToPrevious(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 30, top: 20),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            FontAwesomeIcons.backward,
+            color: Colors.white,
+            size: 40,
+          ),
+        ),
+      ],
+    ),
+  );
+}
