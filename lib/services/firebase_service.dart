@@ -25,6 +25,22 @@ class FirebaseService {
     }
   }
 
+  Future<void> updateTotal({
+    required String totalToPay,
+    required String clientName,
+  }) async {
+    try {
+      await db.collection('clients').doc(clientName).set(
+        {
+          'total_to_pay': totalToPay,
+        },
+      );
+    } on FirebaseException catch (e) {
+      log('This happened');
+      log(e.toString());
+    }
+  }
+
   Future<void> addProductToClient(
     Map<String, dynamic> productData,
     String clientName,

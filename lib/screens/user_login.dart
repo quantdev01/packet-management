@@ -1,5 +1,6 @@
 import 'package:entree_sortie/screens/home.dart';
 import 'package:entree_sortie/screens/register_packet.dart';
+import 'package:entree_sortie/screens/search_packet.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +79,7 @@ class UserLogin extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Home(),
+                        builder: (context) => const SearchPacket(),
                       ),
                     );
                   } else if (controllerUsername.text == '' ||

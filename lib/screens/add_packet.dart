@@ -52,11 +52,6 @@ class _AddPacketState extends State<AddPacket> {
   @override
   void initState() {
     super.initState();
-    firebaseService.registerClient(
-      clientName: clientName,
-      ltaNumber: ltaNumber,
-      totalToPay: fullTotal.toStringAsFixed(1),
-    );
   }
 
   Widget addPacket(String name, double weight) {
@@ -247,7 +242,9 @@ class _AddPacketState extends State<AddPacket> {
                         "lta_price": ltaPrice,
                         "nombres": packetNumber,
                         "emprunt_prix": credit,
+                        "total_price": total,
                       });
+                      log('ToTal value $fullTotal');
 
                       setState(() {
                         if (fullTotal == 0) {
@@ -269,6 +266,12 @@ class _AddPacketState extends State<AddPacket> {
                         log(packetsListClient.toString());
                       });
                       //* Adding to firestore db
+
+                      firebaseService.registerClient(
+                        clientName: clientName,
+                        ltaNumber: ltaNumber,
+                        totalToPay: fullTotal.toStringAsFixed(1),
+                      );
 
                       firebaseService.addProductToClient(
                         packetsListClient,

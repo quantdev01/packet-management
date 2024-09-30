@@ -1,7 +1,7 @@
 import 'package:entree_sortie/firebase_options.dart';
 import 'package:entree_sortie/screens/home.dart';
 import 'package:entree_sortie/screens/home_mobile.dart';
-import 'package:entree_sortie/screens/register_packet.dart';
+import 'package:entree_sortie/screens/search_packet.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class Main extends StatelessWidget {
       home: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > 1200) {
-            return const RegisterPacket();
+            return const SearchPacket();
           } else if (constraints.maxHeight < 1200) {
             return const HomeMobile();
           } else {
