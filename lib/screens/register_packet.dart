@@ -39,7 +39,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
                     child: Text(
                       'Enregistrement',
                       style: TextStyle(
-                        fontSize: ksizeTitle,
+                        fontSize: kSizeTitle,
                         color: kWhiteColor,
                       ),
                     ),

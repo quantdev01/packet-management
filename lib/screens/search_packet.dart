@@ -39,7 +39,7 @@ class _SearchPacketState extends State<SearchPacket> {
                       child: Text(
                         'Rechereche un colis',
                         style: TextStyle(
-                          fontSize: ksizeTitle,
+                          fontSize: kSizeTitle,
                           color: kWhiteColor,
                         ),
                       ),
@@ -104,8 +104,12 @@ class _SearchPacketState extends State<SearchPacket> {
                         subtitle: Text(
                           '${clientData['total_to_pay']}\$',
                           maxLines: 1,
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: kBlueColor,
+                          ),
                         ),
+                        trailing: Text('Status'),
                         onTap: () => _showProductsDialog(context, clientId),
                       );
                     },

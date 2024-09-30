@@ -1,4 +1,4 @@
-import 'package:entree_sortie/screens/search_packet.dart';
+import 'package:entree_sortie/screens/search_packet_mobile.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +71,7 @@ class AdminLoginMobile extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SearchPacket(),
+                        builder: (context) => const SearchPacketMobile(),
                       ),
                     );
                   } else if (controllerUsername.text == '' ||

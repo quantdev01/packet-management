@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const ksizeTitle = 70.0;
+const kSizeTitle = 70.0;
 
 kTextStyleButtons(
   Color textColor,

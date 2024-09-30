@@ -121,7 +121,7 @@ class _AddPacketState extends State<AddPacket> {
               child: Text(
                 'Enregistrement',
                 style: TextStyle(
-                  fontSize: ksizeTitle,
+                  fontSize: kSizeTitle,
                   color: kWhiteColor,
                 ),
               ),

@@ -1,7 +1,6 @@
 import 'package:entree_sortie/firebase_options.dart';
 import 'package:entree_sortie/screens/home.dart';
 import 'package:entree_sortie/screens/home_mobile.dart';
-import 'package:entree_sortie/screens/search_packet.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';

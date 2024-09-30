@@ -39,7 +39,7 @@ Widget title({
     Text(
       text!,
       style: const TextStyle(
-        fontSize: ksizeTitle,
+        fontSize: kSizeTitle,
         color: kWhiteColor,
         fontFamily: 'Condensed',
       ),
@@ -132,6 +132,7 @@ Widget backToMenuButton(BuildContext context) {
   );
 }
 
+//* Back button
 Widget backToPrevious(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.only(left: 30, top: 20),
@@ -146,6 +147,28 @@ Widget backToPrevious(BuildContext context) {
             FontAwesomeIcons.backward,
             color: Colors.white,
             size: 40,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+//* back to previous mobile
+Widget backToPreviousMobile(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 30, top: 20),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            FontAwesomeIcons.backward,
+            color: Colors.white,
+            size: 20,
           ),
         ),
       ],

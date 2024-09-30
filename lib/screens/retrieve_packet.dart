@@ -30,7 +30,7 @@ class RetrievePacket extends StatelessWidget {
                   const Text(
                     'Retrait Colis',
                     style: TextStyle(
-                      fontSize: ksizeTitle,
+                      fontSize: kSizeTitle,
                       color: kWhiteColor,
                     ),
                   ),
