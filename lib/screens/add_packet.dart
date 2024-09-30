@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:entree_sortie/screens/register_packet.dart';
+import 'package:entree_sortie/services/firebase_service.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +37,10 @@ class _AddPacketState extends State<AddPacket> {
   TextEditingController controllerPacketNumber = TextEditingController();
   TextEditingController controllerTotalWeight = TextEditingController();
   TextEditingController controllerPriceForWeight = TextEditingController();
+  TextEditingController controllerCredit = TextEditingController();
+
+  //* Firebase instance
+  FirebaseService firebaseService = FirebaseService();
 
   @override
   void dispose() {
@@ -43,16 +50,40 @@ class _AddPacketState extends State<AddPacket> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    firebaseService.registerClient(
+      clientName: clientName,
+      ltaNumber: ltaNumber,
+      totalToPay: fullTotal.toStringAsFixed(1),
+    );
+  }
+
+  Widget addPacket(String name, double weight) {
+    return Row(
+      children: [
+        Text(
+          name,
+          style: kTextStyleNormal,
+        ),
+        SizedBox(width: 20),
+        Text(
+          '${weight.toStringAsFixed(1)} KG',
+          style: TextStyle(
+            fontSize: kSizeTextBox,
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> packetsList = [];
+  Map<String, dynamic> packetsListClient = {};
+  double total = 0;
+  double fullTotal = 0;
+
+  @override
   Widget build(BuildContext context) {
-    Widget addPacket(String name, String weight) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text(name), Text(weight)],
-      );
-    }
-
-    List<Widget> packetsList = [];
-
     return Scaffold(
         body: SingleChildScrollView(
       child: Column(
@@ -135,18 +166,8 @@ class _AddPacketState extends State<AddPacket> {
                     width: kBoxWidht,
                     textSize: kSizeTextBox,
                     isPassword: false,
-                    icon: FontAwesomeIcons.idBadge,
+                    icon: FontAwesomeIcons.calculator,
                     hintText: 'Nombre colis',
-                  ),
-                  const SizedBox(height: 30),
-                  myTextField(
-                    controller: controllerTotalWeight,
-                    height: kBoxHeight,
-                    width: kBoxWidht,
-                    textSize: kSizeTextBox,
-                    isPassword: false,
-                    icon: FontAwesomeIcons.idBadge,
-                    hintText: 'Total Kilos',
                   ),
                   const SizedBox(height: 30),
                   myTextField(
@@ -155,10 +176,31 @@ class _AddPacketState extends State<AddPacket> {
                     width: kBoxWidht,
                     textSize: kSizeTextBox,
                     isPassword: false,
-                    icon: FontAwesomeIcons.idBadge,
-                    hintText: 'Prix Discuter par kilos',
+                    icon: FontAwesomeIcons.dollarSign,
+                    hintText: 'Frais LTA ex(1.1)',
                   ),
                   const SizedBox(height: 30),
+                  myTextField(
+                    controller: controllerTotalWeight,
+                    height: kBoxHeight,
+                    width: kBoxWidht,
+                    textSize: kSizeTextBox,
+                    isPassword: false,
+                    icon: FontAwesomeIcons.calculator,
+                    hintText: 'Total Kilos',
+                  ),
+                  const SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () {},
+                    child: myButton(
+                      buttonColor: kBlueColor,
+                      height: kBoxHeight,
+                      width: kBoxWidht,
+                      textColor: kWhiteColor,
+                      text: 'Enregistrer',
+                      textSize: kSizeTextBox,
+                    ),
+                  ),
                   const SizedBox(height: 30),
                   const SizedBox(height: 30),
                 ],
@@ -170,25 +212,83 @@ class _AddPacketState extends State<AddPacket> {
                     'Colis ajouter',
                     style: kTextStyleNormal,
                   ),
+
+                  // ! List of packets
+
                   const SizedBox(height: 30),
-                  Column(
-                    children: packetsList,
+                  Column(children: packetsList),
+                  const SizedBox(height: 30),
+                  Text(
+                    'Total à payer : ${fullTotal.toStringAsFixed(1)}',
+                    style: TextStyle(
+                      fontSize: 40,
+                    ),
                   ),
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30),
+
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        packetsList = [
-                          Text("State changed"),
-                          Text(
-                            'New state',
-                          )
-                        ];
-                        // packetsList.add(addPacket(
-                        //   controllerPacketName.text,
-                        //   controllerTotalWeight.text,
-                        // ));
+                      final weight = double.parse(controllerTotalWeight.text);
+                      final ltaPrice =
+                          double.parse(controllerPriceForWeight.text);
+
+                      final credit = 0;
+
+                      final packetName = controllerPacketName.text;
+
+                      final packetNumber =
+                          double.parse(controllerPacketNumber.text);
+
+                      total = weight * ltaPrice + 1;
+
+                      packetsListClient.addAll({
+                        "name": packetName,
+                        "weight": weight,
+                        "lta_price": ltaPrice,
+                        "nombres": packetNumber,
+                        "emprunt_prix": credit,
                       });
+
+                      setState(() {
+                        if (fullTotal == 0) {
+                          fullTotal = total;
+                        } else {
+                          fullTotal += total;
+                        }
+
+                        if (controllerPacketName.text != '' &&
+                            controllerTotalWeight.text != '') {
+                          packetsList.add(
+                            addPacket(
+                              controllerPacketName.text,
+                              total,
+                            ),
+                          );
+                        }
+                        log('Colis list');
+                        log(packetsListClient.toString());
+                      });
+                      //* Adding to firestore db
+
+                      firebaseService.addProductToClient(
+                        packetsListClient,
+                        clientName,
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Enregistrez avec success'),
+                          backgroundColor: Colors.green, // Warning color
+                          duration:
+                              Duration(seconds: 2), // Duration of SnackBar
+                        ),
+                      );
+                      //Flushing the textfields
+
+                      controllerId.text = '';
+                      controllerPacketName.text = '';
+                      controllerPacketNumber.text = '';
+                      controllerPriceForWeight.text = '';
+                      controllerTotalWeight.text = '';
                     },
                     child: myButton(
                       buttonColor: kBlueColor,
@@ -202,42 +302,6 @@ class _AddPacketState extends State<AddPacket> {
                 ],
               ),
             ],
-          ),
-          GestureDetector(
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Enregistrez avec success'),
-                  backgroundColor: Colors.green, // Warning color
-                  duration: Duration(seconds: 2), // Duration of SnackBar
-                ),
-              );
-              setState(() {
-                packetsList = [
-                  Text("State changed"),
-                  Text(
-                    'New state',
-                  )
-                ];
-                // packetsList.add(addPacket(
-                //   controllerPacketName.text,
-                //   controllerTotalWeight.text,
-                // ));
-              });
-              controllerId.text = '';
-              controllerPacketName.text = '';
-              controllerPacketNumber.text = '';
-              controllerPriceForWeight.text = '';
-              controllerTotalWeight.text = '';
-            },
-            child: myButton(
-              buttonColor: kBlueColor,
-              height: kBoxHeight,
-              width: kBoxWidht,
-              textColor: kWhiteColor,
-              text: 'Enregistrer',
-              textSize: kSizeTextBox,
-            ),
           ),
           SizedBox(height: 30),
         ],
