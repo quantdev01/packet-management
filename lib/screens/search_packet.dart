@@ -66,7 +66,7 @@ class _SearchPacketState extends State<SearchPacket> {
                 },
                 decoration: InputDecoration(
                   prefixIcon: Icon(FontAwesomeIcons.magnifyingGlass),
-                  hintText: 'Search client or LTA number',
+                  hintText: 'Nom du client / numero LTA',
                 ),
               ),
               const SizedBox(height: 30),

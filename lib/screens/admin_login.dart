@@ -1,3 +1,5 @@
+import 'package:entree_sortie/screens/home.dart';
+import 'package:entree_sortie/screens/home_mobile.dart';
 import 'package:entree_sortie/screens/search_packet.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
@@ -25,7 +27,14 @@ class AdminLogin extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              backToPrevious(context),
+              GestureDetector(
+                onTap: () {
+                  MediaQuery.of(context).size.width > 1200
+                      ? Home()
+                      : HomeMobile();
+                },
+                child: backToPrevious(context),
+              ),
               title(text: 'Se connecter/Admin'),
               const SizedBox(height: 30),
               myTextField(
