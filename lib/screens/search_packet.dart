@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:entree_sortie/screens/user_login.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,15 @@ class _SearchPacketState extends State<SearchPacket> {
                 ),
                 child: Column(
                   children: [
-                    backToMenuButton(context),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserLogin()),
+                          );
+                        },
+                        child: backToMenuButton(context)),
                     const Center(
                       child: Text(
                         'Rechereche un colis',

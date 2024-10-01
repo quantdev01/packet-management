@@ -1,3 +1,5 @@
+import 'package:entree_sortie/screens/home.dart';
+import 'package:entree_sortie/screens/home_mobile.dart';
 import 'package:entree_sortie/screens/register_packet.dart';
 import 'package:entree_sortie/screens/search_packet.dart';
 import 'package:entree_sortie/utils/constant.dart';
@@ -12,6 +14,7 @@ class UserLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController controllerUsername = TextEditingController();
     TextEditingController controllerPassword = TextEditingController();
+    final media = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Expanded(
@@ -27,7 +30,18 @@ class UserLogin extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              backToPrevious(context),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          media > 1200 ? Home() : HomeMobile(),
+                    ),
+                  );
+                },
+                child: backToPrevious(context),
+              ),
               title(text: 'Se connecter/Utilisateur'),
               const SizedBox(height: 30),
               myTextField(

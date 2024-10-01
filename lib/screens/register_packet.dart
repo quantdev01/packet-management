@@ -1,4 +1,5 @@
 import 'package:entree_sortie/screens/add_packet.dart';
+import 'package:entree_sortie/screens/user_login.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,17 @@ class _RegisterPacketState extends State<RegisterPacket> {
               ),
               child: Column(
                 children: [
-                  backToMenuButton(context),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserLogin(),
+                        ),
+                      );
+                    },
+                    child: backToMenuButton(context),
+                  ),
                   const Center(
                     child: Text(
                       'Enregistrement',
@@ -47,7 +58,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
                 ],
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: kSizedBoxHeight),
             myTextField(
               controller: controllerLtaNumber,
               height: kBoxHeight,
@@ -57,7 +68,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
               icon: FontAwesomeIcons.idBadge,
               hintText: 'Numéro LTA',
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: kSizedBoxHeight),
             myTextField(
               controller: controllerPacketName,
               height: kBoxHeight,
@@ -67,7 +78,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
               icon: FontAwesomeIcons.boxOpen,
               hintText: 'Nom de l\'éxpediteur',
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: kSizedBoxHeight),
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -89,7 +100,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
                 textSize: kSizeTextBox,
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: kSizedBoxHeight),
           ],
         ),
       ),

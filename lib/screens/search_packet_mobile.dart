@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:entree_sortie/screens/admin_login_mobile.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,16 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    backToPreviousMobile(context),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AdminLoginMobile(),
+                            ),
+                          );
+                        },
+                        child: backToPreviousMobile(context)),
                     const Center(
                       child: Text(
                         'Rechereche un colis',
