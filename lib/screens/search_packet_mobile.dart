@@ -148,7 +148,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                 .snapshots(),
             builder: (context, productSnapshot) {
               if (productSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: const CircularProgressIndicator());
+                return Center(child: whileWaiting());
               }
 
               if (!productSnapshot.hasData ||

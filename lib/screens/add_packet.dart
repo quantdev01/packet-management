@@ -6,6 +6,9 @@ import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class AddPacket extends StatefulWidget {
   final String ltaNumber;
@@ -39,6 +42,29 @@ class _AddPacketState extends State<AddPacket> {
   TextEditingController controllerPriceForWeight = TextEditingController();
   TextEditingController controllerCredit = TextEditingController();
 
+  Map<String, dynamic> invoiceData = {};
+
+  Future<void> _printPdf() async {
+    try {
+      final doc = pw.Document();
+
+      doc.addPage(pw.Page(
+        pageFormat: PdfPageFormat(279, 215),
+        build: (context) {
+          return pw.Center(
+            child: pw.Text('Hello TEst Dan'),
+          );
+        },
+      ));
+
+      await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => doc.save(),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
   //* Firebase instance
   FirebaseService firebaseService = FirebaseService();
   var isTakingCredit;
@@ -56,6 +82,15 @@ class _AddPacketState extends State<AddPacket> {
   }
 
   Widget addPacket(String name, double weight) {
+    invoiceData = {
+      "title": "Association Kindu Maendeleo",
+      "sub_title": "A K M",
+      "Date": DateTime.now(),
+      "Expediteur": clientName,
+      "Nom du produit": controllerPacketName.text,
+      "Footer": "-----------------",
+      "Price": fullTotal.toString(),
+    };
     return Row(
       children: [
         Text(
@@ -336,7 +371,19 @@ class _AddPacketState extends State<AddPacket> {
                   text: 'Ajouter',
                   textSize: kSizeTextBox,
                 ),
-              )
+              ),
+              SizedBox(height: 30),
+              GestureDetector(
+                onTap: _printPdf,
+                child: myButton(
+                  buttonColor: Colors.green,
+                  height: kBoxHeight,
+                  width: kBoxWidht,
+                  textColor: kWhiteColor,
+                  text: 'Imprimer',
+                  textSize: kSizeTextBox,
+                ),
+              ),
             ],
           ),
         ],

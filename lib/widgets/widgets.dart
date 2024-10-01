@@ -2,6 +2,7 @@ import 'package:entree_sortie/screens/home.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 
 //* Custom button
 Container myButton({
@@ -175,3 +176,17 @@ Widget backToPreviousMobile(BuildContext context) {
     ),
   );
 }
+
+//* Shimmer effect
+
+Widget whileWaiting() => SizedBox(
+      width: 200.0,
+      height: 100.0,
+      child: Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade400,
+          child: Container(
+            height: 30,
+            color: Colors.grey.shade300,
+          )),
+    );

@@ -23,8 +23,8 @@ const Color kBlueColor = Color.fromARGB(255, 0, 75, 172);
 const Color kRedColor = Color.fromARGB(255, 172, 0, 0);
 const Color kWhiteColor = Colors.white;
 
-const double kBoxHeight = 86;
-const double kBoxWidht = 492;
+const double kBoxHeight = 86 - 20;
+const double kBoxWidht = 492 - 20;
 const double kBoxHeightMobile = kBoxHeight - 30;
 const double kBoxWidhtMobile = kBoxWidht - 200;
 
