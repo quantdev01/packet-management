@@ -23,7 +23,7 @@ class Home extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              title(text: 'Continuez'),
+              title(text: 'Association Kindu Maendeleo\nA K M'),
               const SizedBox(height: 30),
               GestureDetector(
                 onTap: () {

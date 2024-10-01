@@ -25,14 +25,14 @@ class FirebaseService {
     }
   }
 
-  Future<void> updateTotal({
-    required String totalToPay,
+  Future<void> updateWeight({
+    required String newWeight,
     required String clientName,
   }) async {
     try {
-      await db.collection('clients').doc(clientName).set(
+      await db.collection('clients').doc(clientName).update(
         {
-          'total_to_pay': totalToPay,
+          'total_to_pay': newWeight,
         },
       );
     } on FirebaseException catch (e) {

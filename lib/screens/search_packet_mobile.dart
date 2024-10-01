@@ -34,18 +34,16 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                   ),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => AdminLoginMobile(),
-                            ),
+                                builder: (context) => AdminLoginMobile()),
                           );
                         },
-                        child: backToPreviousMobile(context)),
+                        child: backToMenuButton(context)),
                     const Center(
                       child: Text(
                         'Rechereche un colis',
@@ -58,7 +56,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: kSizeNormalText),
               TextField(
                 controller: controllerSearch,
                 onChanged: (value) {
@@ -71,7 +69,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                   hintText: 'Nom du client / numero LTA',
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: kSizedBoxHeight),
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('clients')
@@ -105,6 +103,10 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                           filteredClients[index].data() as Map<String, dynamic>;
                       final clientId = filteredClients[index].id;
 
+                      // Check the status field (default: false)
+                      final isDelivered = clientData['status'] ?? false;
+                      final totalWeight = clientData['total_weight'] ?? 0;
+
                       return ListTile(
                         title: Text(
                           '${clientData['lta_number']}  ${clientData['name']}',
@@ -120,15 +122,14 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                             color: kBlueColor,
                           ),
                         ),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text('Status'),
-                            Icon(
-                              FontAwesomeIcons.trash,
-                              size: 15,
-                            ),
-                          ],
+                        trailing: Text(
+                          isDelivered
+                              ? 'Done'
+                              : 'Pending', // Display status based on `status`
+                          style: TextStyle(
+                            color: isDelivered ? Colors.green : Colors.orange,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         onTap: () => _showProductsDialog(context, clientId),
                       );
@@ -176,10 +177,32 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                   itemBuilder: (context, index) {
                     final productData =
                         products[index].data() as Map<String, dynamic>;
+                    final productId = products[index].id;
+                    final weightController = TextEditingController(
+                        text: productData['weight'].toString());
+
                     return ListTile(
                       title: Text(productData['name']),
                       subtitle: Text(
                           'Poid: ${productData['weight']}kg, Prix: ${productData['total_price']}\$'),
+                      trailing: IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () {
+                          double totalPrice = double.tryParse(
+                                  productData['total_price'].toString()) ??
+                              0.0;
+                          double weight = double.tryParse(
+                                  productData['weight'].toString()) ??
+                              0.0;
+                          _showEditWeightDialog(
+                            context,
+                            clientId,
+                            productId,
+                            weight,
+                            totalPrice,
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
@@ -195,5 +218,85 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
         );
       },
     );
+  }
+
+  // Show dialog to edit the weight and update price
+  void _showEditWeightDialog(BuildContext context, String clientId,
+      String productId, double currentWeight, double currentPrice) {
+    final weightController =
+        TextEditingController(text: currentWeight.toString());
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Modifier le poids"),
+          content: TextField(
+            controller: weightController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              labelText: "Nouveau poids (kg)",
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                int newWeight = int.parse(weightController.text);
+                double newTotalPrice = currentPrice / currentWeight * newWeight;
+                // Update the product weight and recalculate price
+                FirebaseFirestore.instance
+                    .collection('clients')
+                    .doc(clientId)
+                    .collection('products')
+                    .doc(productId)
+                    .update({
+                  'weight': newWeight,
+                  'total_price': newTotalPrice,
+                  // .toStringAsFixed(1),
+                });
+
+                // Recalculate the total weight and total to pay for the client
+                _recalculateClientTotal(clientId);
+
+                Navigator.of(context).pop();
+              },
+              child: const Text('Update'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Recalculate the total weight and total to pay for the client
+  void _recalculateClientTotal(String clientId) async {
+    final productsSnapshot = await FirebaseFirestore.instance
+        .collection('clients')
+        .doc(clientId)
+        .collection('products')
+        .get();
+
+    num totalWeight = 0;
+    num totalToPay = 0;
+
+    for (var product in productsSnapshot.docs) {
+      final productData = product.data();
+      totalWeight += productData['weight'];
+      totalToPay += productData['total_price'];
+    }
+
+    // Update the client document with the recalculated totals
+    await FirebaseFirestore.instance
+        .collection('clients')
+        .doc(clientId)
+        .update({
+      'total_weight': totalWeight,
+      'total_to_pay': totalToPay,
+      'status': totalWeight == 0, // Update status based on total weight
+    });
   }
 }

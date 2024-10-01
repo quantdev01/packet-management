@@ -39,6 +39,7 @@ Widget title({
 }) =>
     Text(
       text!,
+      textAlign: TextAlign.center,
       style: const TextStyle(
         fontSize: kSizeTitle,
         color: kWhiteColor,

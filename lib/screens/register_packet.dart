@@ -44,7 +44,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
                         ),
                       );
                     },
-                    child: backToMenuButton(context),
+                    child: backToPrevious(context),
                   ),
                   const Center(
                     child: Text(
