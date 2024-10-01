@@ -60,16 +60,6 @@ class _RegisterPacketState extends State<RegisterPacket> {
             ),
             const SizedBox(height: kSizedBoxHeight),
             myTextField(
-              controller: controllerLtaNumber,
-              height: kBoxHeight,
-              width: kBoxWidht,
-              textSize: kSizeTextBox,
-              isPassword: false,
-              icon: FontAwesomeIcons.idBadge,
-              hintText: 'Numéro LTA',
-            ),
-            const SizedBox(height: kSizedBoxHeight),
-            myTextField(
               controller: controllerPacketName,
               height: kBoxHeight,
               width: kBoxWidht,
@@ -77,6 +67,16 @@ class _RegisterPacketState extends State<RegisterPacket> {
               isPassword: false,
               icon: FontAwesomeIcons.boxOpen,
               hintText: 'Nom de l\'éxpediteur',
+            ),
+            const SizedBox(height: kSizedBoxHeight),
+            myTextField(
+              controller: controllerLtaNumber,
+              height: kBoxHeight,
+              width: kBoxWidht,
+              textSize: kSizeTextBox,
+              isPassword: false,
+              icon: FontAwesomeIcons.idBadge,
+              hintText: 'Numéro LTA',
             ),
             const SizedBox(height: kSizedBoxHeight),
             GestureDetector(

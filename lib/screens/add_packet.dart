@@ -35,7 +35,6 @@ class _AddPacketState extends State<AddPacket> {
     this.ltaNumber,
   );
 
-  TextEditingController controllerId = TextEditingController();
   TextEditingController controllerPacketName = TextEditingController();
   TextEditingController controllerPacketNumber = TextEditingController();
   TextEditingController controllerTotalWeight = TextEditingController();
@@ -44,25 +43,25 @@ class _AddPacketState extends State<AddPacket> {
 
   Map<String, dynamic> invoiceData = {};
 
-  Future<void> _printPdf() async {
-    try {
-      final doc = pw.Document();
+  Future<void> printWidget(double totalPrice) async {
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async {
+        final pdf = pw.Document();
 
-      doc.addPage(pw.Page(
-        pageFormat: PdfPageFormat(279, 215),
-        build: (context) {
-          return pw.Center(
-            child: pw.Text('Hello TEst Dan'),
-          );
-        },
-      ));
-
-      await Printing.layoutPdf(
-        onLayout: (PdfPageFormat format) async => doc.save(),
-      );
-    } catch (e) {
-      print(e);
-    }
+        // Convert the Flutter widget into a PDF page
+        pdf.addPage(
+          pw.Page(
+            build: (pw.Context context) {
+              return pw.Center(
+                child: pw.Text(
+                    '---$ltaNumber---\n---$clientName---\n   NBR${controllerPacketNumber.text}\n\n   Total : ${controllerTotalWeight.text}KG\n -------------------------------------\n   Total Price : ${totalPrice.toStringAsFixed(1)}\n'),
+              );
+            },
+          ),
+        );
+        return pdf.save();
+      },
+    );
   }
 
   //* Firebase instance
@@ -358,7 +357,6 @@ class _AddPacketState extends State<AddPacket> {
                   );
                   //Flushing the textfields
 
-                  controllerId.text = '';
                   controllerPacketName.text = '';
                   controllerPacketNumber.text = '';
                   controllerPriceForWeight.text = '';
@@ -375,7 +373,9 @@ class _AddPacketState extends State<AddPacket> {
               ),
               SizedBox(height: 30),
               GestureDetector(
-                onTap: _printPdf,
+                onTap: () {
+                  printWidget(fullTotal);
+                },
                 child: myButton(
                   buttonColor: Colors.green,
                   height: kBoxHeight,

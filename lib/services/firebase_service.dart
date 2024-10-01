@@ -17,6 +17,7 @@ class FirebaseService {
           'name': clientName,
           'lta_number': ltaNumber,
           'total_to_pay': totalToPay,
+          'created_at': Timestamp.now(),
         },
       );
     } on FirebaseException catch (e) {

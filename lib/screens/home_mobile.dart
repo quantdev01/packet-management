@@ -14,7 +14,7 @@ class HomeMobile extends StatelessWidget {
         centerTitle: true,
         backgroundColor: kBlueColor,
         title: const Text(
-          'Continuez',
+          'Association Kindu Maendeleo',
           style: TextStyle(fontFamily: 'Condensed'),
         ),
       ),

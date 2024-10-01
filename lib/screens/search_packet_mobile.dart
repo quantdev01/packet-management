@@ -43,7 +43,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                                 builder: (context) => AdminLoginMobile()),
                           );
                         },
-                        child: backToMenuButton(context)),
+                        child: backToPrevious(context)),
                     const Center(
                       child: Text(
                         'Rechereche un colis',
@@ -107,9 +107,32 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                       final isDelivered = clientData['status'] ?? false;
                       final totalWeight = clientData['total_weight'] ?? 0;
 
+                      Timestamp createdAt = clientData['created_at'];
+                      final hour = createdAt.toDate().hour;
+                      final minute = createdAt.toDate().minute;
+                      final day = createdAt.toDate().day;
+                      final month = createdAt.toDate().month;
+                      final months = [
+                        'Empty',
+                        'Janvier',
+                        'Février',
+                        'Mars',
+                        'Avril',
+                        'Mai',
+                        'Juin',
+                        'Juillet',
+                        'Aout',
+                        'Septembre',
+                        'Octobre',
+                        'Novembre',
+                        'Decembre'
+                      ];
+
+                      final year = createdAt.toDate().year;
+
                       return ListTile(
                         title: Text(
-                          '${clientData['lta_number']}  ${clientData['name']}',
+                          '${clientData['name']}   $day ${months[month]}   $year   $hour:$minute`',
                           style: TextStyle(fontSize: kDefaultFontSize),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

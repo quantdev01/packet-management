@@ -25,8 +25,8 @@ const Color kWhiteColor = Colors.white;
 
 const double kSizedBoxHeight = 20;
 
-const double kBoxHeight = 86 - 20;
-const double kBoxWidht = 492 - 20;
+const double kBoxHeight = 86 - 10;
+const double kBoxWidht = 492 - 10;
 const double kBoxHeightMobile = kBoxHeight - 30;
 const double kBoxWidhtMobile = kBoxWidht - 200;
 
