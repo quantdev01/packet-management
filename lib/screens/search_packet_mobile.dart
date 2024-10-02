@@ -73,6 +73,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('clients')
+                    .orderBy('created_at', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -147,8 +148,8 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                         ),
                         trailing: Text(
                           isDelivered
-                              ? 'Done'
-                              : 'Pending', // Display status based on `status`
+                              ? 'Livrer'
+                              : 'En cours de livraison', // Display status based on `status`
                           style: TextStyle(
                             color: isDelivered ? Colors.green : Colors.orange,
                             fontWeight: FontWeight.bold,
