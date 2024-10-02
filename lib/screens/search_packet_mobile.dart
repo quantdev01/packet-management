@@ -106,7 +106,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
 
                       // Check the status field (default: false)
                       final isDelivered = clientData['status'] ?? false;
-                      final totalWeight = clientData['total_weight'] ?? 0;
+                      // final totalWeight = clientData['total_weight'] ?? 0;
 
                       Timestamp createdAt = clientData['created_at'];
                       final hour = createdAt.toDate().hour;
@@ -202,8 +202,8 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                     final productData =
                         products[index].data() as Map<String, dynamic>;
                     final productId = products[index].id;
-                    final weightController = TextEditingController(
-                        text: productData['weight'].toString());
+                    // final weightController = TextEditingController(
+                    //     text: productData['weight'].toString());
 
                     return ListTile(
                       title: Text(productData['name']),

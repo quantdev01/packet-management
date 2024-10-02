@@ -4,7 +4,6 @@ import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 
 class SearchPacket extends StatefulWidget {
   const SearchPacket({super.key});
@@ -110,7 +109,7 @@ class _SearchPacketState extends State<SearchPacket> {
 
                       // Check the status field (default: false)
                       final isDelivered = clientData['status'] ?? false;
-                      final totalWeight = clientData['total_weight'] ?? 0;
+                      // final totalWeight = clientData['total_weight'] ?? 0;
                       Timestamp createdAt = clientData['created_at'];
 
                       final hour = createdAt.toDate().hour;
@@ -231,8 +230,8 @@ class _SearchPacketState extends State<SearchPacket> {
                     final productData =
                         products[index].data() as Map<String, dynamic>;
                     final productId = products[index].id;
-                    final weightController = TextEditingController(
-                        text: productData['weight'].toString());
+                    // final weightController = TextEditingController(
+                    //     text: productData['weight'].toString());
 
                     return ListTile(
                       title: Text(productData['name']),
