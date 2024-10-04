@@ -313,7 +313,6 @@ class _AddPacketState extends State<AddPacket> {
                     "nombres": packetNumber,
                     "emprunt_prix": credit,
                     "total_price": total.toStringAsFixed(1),
-                    "status": false,
                   });
                   log('ToTal value $fullTotal');
 

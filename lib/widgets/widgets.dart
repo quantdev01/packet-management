@@ -155,11 +155,12 @@ Widget backToPrevious(BuildContext context) {
     ),
   );
 }
+//* Back button Mobile
 
 //* back to previous mobile
 Widget backToPreviousMobile(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.only(left: 30, top: 20),
+    padding: const EdgeInsets.only(left: 10, top: 10),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [

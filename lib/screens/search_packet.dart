@@ -111,11 +111,21 @@ class _SearchPacketState extends State<SearchPacket> {
                       final isDelivered = clientData['status'] ?? false;
                       // final totalWeight = clientData['total_weight'] ?? 0;
                       Timestamp createdAt = clientData['created_at'];
+                      Timestamp modifiedAt = clientData['modified_at'];
 
                       final hour = createdAt.toDate().hour;
                       final minute = createdAt.toDate().minute;
                       final day = createdAt.toDate().day;
                       final month = createdAt.toDate().month;
+                      final year = createdAt.toDate().year;
+
+                      //*  TO know when the packet was taken
+
+                      final hour1 = modifiedAt.toDate().hour;
+                      final minute1 = modifiedAt.toDate().minute;
+                      final day1 = modifiedAt.toDate().day;
+                      final month1 = modifiedAt.toDate().month;
+                      final year1 = modifiedAt.toDate().year;
                       final months = [
                         'Empty',
                         'Janvier',
@@ -131,7 +141,6 @@ class _SearchPacketState extends State<SearchPacket> {
                         'Novembre',
                         'Decembre'
                       ];
-                      final year = createdAt.toDate().year;
 
                       return ListTile(
                         title: Row(
@@ -150,13 +159,13 @@ class _SearchPacketState extends State<SearchPacket> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              '$day ${months[month]} $year',
+                              '$day ${months[month]} $year à ${hour}h${minute}min',
                               style: TextStyle(fontSize: kDefaultFontSize),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              '${hour}h${minute}min',
+                              '$day1 ${months[month1]} $year1 à ${hour1}h${minute1}min',
                               style: TextStyle(fontSize: kDefaultFontSize),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -275,44 +284,59 @@ class _SearchPacketState extends State<SearchPacket> {
   // Show dialog to edit the weight and update price
   void _showEditWeightDialog(BuildContext context, String clientId,
       String productId, double currentWeight, double currentPrice) {
-    final weightController =
-        TextEditingController(text: currentWeight.toString());
+    final weightController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier le poids"),
+          title: const Text("Retrait du colis"),
           content: TextField(
             controller: weightController,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: "Nouveau poids (kg)",
+            decoration: InputDecoration(
+              labelText: "Poid à retirer (KG)",
+              hintText: '0.0',
             ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                int newWeight = int.parse(weightController.text);
-                double newTotalPrice = currentPrice / currentWeight * newWeight;
-                // Update the product weight and recalculate price
-                FirebaseFirestore.instance
-                    .collection('clients')
-                    .doc(clientId)
-                    .collection('products')
-                    .doc(productId)
-                    .update({
-                  'weight': newWeight,
-                  'total_price': newTotalPrice,
-                  // .toStringAsFixed(1),
-                });
+                if (double.parse(weightController.text) <= currentWeight) {
+                  double newWeight =
+                      currentWeight - double.parse(weightController.text);
+                  double newTotalPrice =
+                      currentPrice / currentWeight * newWeight;
+                  // Update the product weight and recalculate price
+                  FirebaseFirestore.instance
+                      .collection('clients')
+                      .doc(clientId)
+                      .collection('products')
+                      .doc(productId)
+                      .update({
+                    'weight': newWeight,
+                    'total_price': double.parse(
+                      newTotalPrice.toStringAsFixed(1),
+                    ),
+                    // .toStringAsFixed(1),
+                  });
 
-                // Recalculate the total weight and total to pay for the client
-                _recalculateClientTotal(clientId);
+                  // Recalculate the total weight and total to pay for the client
+                  _recalculateClientTotal(clientId);
 
-                Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content:
+                          Text('Poid à retirer supérieur au poid du colis'),
+                      backgroundColor: Colors.red, // Warning color
+                      duration: Duration(seconds: 3), // Duration of SnackBar
+                    ),
+                  );
+                }
               },
-              child: const Text('Mettre à jour'),
+              child: const Text('Retirer'),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -349,6 +373,7 @@ class _SearchPacketState extends State<SearchPacket> {
       'total_weight': totalWeight,
       'total_to_pay': totalToPay,
       'status': totalWeight == 0, // Update status based on total weight
+      'modified_at': Timestamp.now(),
     });
   }
 }

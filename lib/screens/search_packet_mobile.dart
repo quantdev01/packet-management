@@ -34,23 +34,24 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                   ),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AdminLoginMobile()),
-                          );
-                        },
-                        child: backToPrevious(context)),
-                    const Center(
-                      child: Text(
-                        'Rechereche un colis',
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: kWhiteColor,
-                        ),
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdminLoginMobile()),
+                        );
+                      },
+                      child: backToPreviousMobile(context),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Rechereche un colis',
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: kWhiteColor,
                       ),
                     ),
                   ],
@@ -102,6 +103,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                     itemBuilder: (context, index) {
                       final clientData =
                           filteredClients[index].data() as Map<String, dynamic>;
+
                       final clientId = filteredClients[index].id;
 
                       // Check the status field (default: false)
@@ -109,31 +111,23 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                       // final totalWeight = clientData['total_weight'] ?? 0;
 
                       Timestamp createdAt = clientData['created_at'];
+                      Timestamp modifiedAt = clientData['modified_at'];
+
                       final hour = createdAt.toDate().hour;
                       final minute = createdAt.toDate().minute;
                       final day = createdAt.toDate().day;
                       final month = createdAt.toDate().month;
-                      final months = [
-                        'Empty',
-                        'Janvier',
-                        'Février',
-                        'Mars',
-                        'Avril',
-                        'Mai',
-                        'Juin',
-                        'Juillet',
-                        'Aout',
-                        'Septembre',
-                        'Octobre',
-                        'Novembre',
-                        'Decembre'
-                      ];
 
-                      final year = createdAt.toDate().year;
+                      //* TO know when the packet was taken
+
+                      final hour1 = modifiedAt.toDate().hour;
+                      final minute1 = modifiedAt.toDate().minute;
+                      final day1 = modifiedAt.toDate().day;
+                      final month1 = modifiedAt.toDate().month;
 
                       return ListTile(
                         title: Text(
-                          '${clientData['name']}   $day ${months[month]}   $year   $hour:$minute`',
+                          '${clientData['name']}   $day/$month $hour:$minute\'   $day1/$month1 $hour1:$minute1\'',
                           style: TextStyle(fontSize: kDefaultFontSize),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -146,15 +140,24 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                             color: kBlueColor,
                           ),
                         ),
-                        trailing: Text(
-                          isDelivered
-                              ? 'Livrer'
-                              : 'En cours de livraison', // Display status based on `status`
-                          style: TextStyle(
-                            color: isDelivered ? Colors.green : Colors.orange,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        // trailing: Text(
+                        //   isDelivered
+                        //       ? 'Livrer'
+                        //       : 'En cours', // Display status based on `status`
+                        //   style: TextStyle(
+                        //     color: isDelivered ? Colors.green : Colors.orange,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
+                        trailing: isDelivered
+                            ? Icon(
+                                FontAwesomeIcons.circleCheck,
+                                color: Colors.green,
+                              )
+                            : Icon(
+                                FontAwesomeIcons.spinner,
+                                color: Colors.orange,
+                              ),
                         onTap: () => _showProductsDialog(context, clientId),
                       );
                     },
@@ -210,7 +213,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                       subtitle: Text(
                           'Poid: ${productData['weight']}kg, Prix: ${productData['total_price']}\$'),
                       trailing: IconButton(
-                        icon: Icon(Icons.edit),
+                        icon: Icon(FontAwesomeIcons.penToSquare),
                         onPressed: () {
                           double totalPrice = double.tryParse(
                                   productData['total_price'].toString()) ??
@@ -247,48 +250,62 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
   // Show dialog to edit the weight and update price
   void _showEditWeightDialog(BuildContext context, String clientId,
       String productId, double currentWeight, double currentPrice) {
-    final weightController =
-        TextEditingController(text: currentWeight.toString());
+    final weightController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier le poids"),
+          title: const Text("Retrait du colis"),
           content: TextField(
             controller: weightController,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
-              labelText: "Nouveau poids (kg)",
+              labelText: "Poid à retirer (Kg)",
+              hintText: '0.0',
             ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                int newWeight = int.parse(weightController.text);
-                double newTotalPrice = currentPrice / currentWeight * newWeight;
-                // Update the product weight and recalculate price
-                FirebaseFirestore.instance
-                    .collection('clients')
-                    .doc(clientId)
-                    .collection('products')
-                    .doc(productId)
-                    .update({
-                  'weight': newWeight,
-                  'total_price': newTotalPrice,
-                  // .toStringAsFixed(1),
-                });
+                if (double.parse(weightController.text) <= currentWeight) {
+                  double newWeight =
+                      currentWeight - double.parse(weightController.text);
+                  double newTotalPrice =
+                      currentPrice / currentWeight * newWeight;
+                  // Update the product weight and recalculate price
+                  FirebaseFirestore.instance
+                      .collection('clients')
+                      .doc(clientId)
+                      .collection('products')
+                      .doc(productId)
+                      .update({
+                    'weight': newWeight,
+                    'total_price':
+                        double.parse(newTotalPrice.toStringAsFixed(1)),
+                    // .toStringAsFixed(1),
+                  });
 
-                // Recalculate the total weight and total to pay for the client
-                _recalculateClientTotal(clientId);
+                  // Recalculate the total weight and total to pay for the client
+                  _recalculateClientTotal(clientId);
 
-                Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content:
+                          Text('Poid à retirer supérieur au poid du colis'),
+                      backgroundColor: Colors.red, // Warning color
+                      duration: Duration(seconds: 3), // Duration of SnackBar
+                    ),
+                  );
+                }
               },
-              child: const Text('Update'),
+              child: const Text('Retirer'),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: const Text('Annuler'),
             ),
           ],
         );

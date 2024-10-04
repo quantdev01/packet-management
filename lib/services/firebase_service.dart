@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class FirebaseService {
   final db = FirebaseFirestore.instance;
@@ -18,6 +17,7 @@ class FirebaseService {
           'lta_number': ltaNumber,
           'total_to_pay': totalToPay,
           'created_at': Timestamp.now(),
+          'modified_at': Timestamp.now(),
         },
       );
     } on FirebaseException catch (e) {
@@ -57,4 +57,13 @@ class FirebaseService {
       log(e.toString());
     }
   }
+
+  // Future<double> getTotal(String clientName) async {
+  //   Stream<DocumentSnapshot<Map<String, dynamic>>> clientData =
+  //       FirebaseFirestore.instance
+  //           .collection('clients')
+  //           .doc(clientName)
+  //           .snapshots();
+  //   return clientData;
+  // }
 }
