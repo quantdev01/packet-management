@@ -1,4 +1,3 @@
-import 'package:entree_sortie/main.dart';
 import 'package:entree_sortie/screens/add_packet.dart';
 import 'package:entree_sortie/screens/user_login.dart';
 import 'package:entree_sortie/utils/constant.dart';
