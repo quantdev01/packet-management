@@ -58,12 +58,26 @@ class FirebaseService {
     }
   }
 
-  // Future<double> getTotal(String clientName) async {
-  //   Stream<DocumentSnapshot<Map<String, dynamic>>> clientData =
-  //       FirebaseFirestore.instance
-  //           .collection('clients')
-  //           .doc(clientName)
-  //           .snapshots();
-  //   return clientData;
-  // }
+  Future<double?> getTotal(String clientName) async {
+    try {
+      // Reference the document for the given clientName in the 'clients' collection
+      DocumentReference<Map<String, dynamic>> clientData =
+          FirebaseFirestore.instance.collection('clients').doc(clientName);
+
+      // Get the document snapshot
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await clientData.get();
+
+      // Check if the document exists and extract the 'total' field
+      if (snapshot.exists) {
+        Map<String, dynamic>? data = snapshot.data();
+        if (data != null && data.containsKey('total_to_pay')) {
+          return data['total_to_pay']?.toDouble();
+        }
+      }
+      return null; // Return null if total is not found
+    } catch (e) {
+      log('Error getting total for client $clientName: $e');
+      return null;
+    }
+  }
 }
