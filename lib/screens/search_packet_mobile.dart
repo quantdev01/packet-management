@@ -33,8 +33,8 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                       onTap: () {
@@ -46,7 +46,6 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                       },
                       child: backToPreviousMobile(context),
                     ),
-                    SizedBox(width: 10),
                     Text(
                       'Rechereche un colis',
                       style: TextStyle(
@@ -54,6 +53,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                         color: kWhiteColor,
                       ),
                     ),
+                    goHomeButtonMobile(context),
                   ],
                 ),
               ),

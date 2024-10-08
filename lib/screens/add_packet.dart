@@ -133,7 +133,7 @@ class _AddPacketState extends State<AddPacket> {
             Padding(
               padding: const EdgeInsets.only(left: 30, top: 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     onTap: () {
@@ -150,16 +150,17 @@ class _AddPacketState extends State<AddPacket> {
                       size: 40,
                     ),
                   ),
+                  const Center(
+                    child: Text(
+                      'Enregistrement',
+                      style: TextStyle(
+                        fontSize: kSizeTitle,
+                        color: kWhiteColor,
+                      ),
+                    ),
+                  ),
+                  goHomeButton(context),
                 ],
-              ),
-            ),
-            const Center(
-              child: Text(
-                'Enregistrement',
-                style: TextStyle(
-                  fontSize: kSizeTitle,
-                  color: kWhiteColor,
-                ),
               ),
             ),
           ],

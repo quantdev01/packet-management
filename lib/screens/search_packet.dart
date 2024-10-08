@@ -33,7 +33,8 @@ class _SearchPacketState extends State<SearchPacket> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                         onTap: () {
@@ -53,6 +54,7 @@ class _SearchPacketState extends State<SearchPacket> {
                         ),
                       ),
                     ),
+                    goHomeButton(context),
                   ],
                 ),
               ),

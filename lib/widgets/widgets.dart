@@ -137,7 +137,7 @@ Widget backToMenuButton(BuildContext context) {
 //* Back button
 Widget backToPrevious(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.only(left: 30, top: 20),
+    padding: const EdgeInsets.only(left: 30),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -192,3 +192,48 @@ Widget whileWaiting() => SizedBox(
             color: Colors.grey.shade300,
           )),
     );
+
+//* home button
+
+GestureDetector goHomeButton(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Home(),
+        ),
+      );
+    },
+    child: Padding(
+      padding: const EdgeInsets.only(right: 30),
+      child: const Icon(
+        FontAwesomeIcons.house,
+        color: Colors.white,
+        size: 40,
+      ),
+    ),
+  );
+}
+//* home button
+
+GestureDetector goHomeButtonMobile(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Home(),
+        ),
+      );
+    },
+    child: Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: const Icon(
+        FontAwesomeIcons.house,
+        color: Colors.white,
+        size: 20,
+      ),
+    ),
+  );
+}

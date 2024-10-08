@@ -1,3 +1,4 @@
+import 'package:entree_sortie/main.dart';
 import 'package:entree_sortie/screens/add_packet.dart';
 import 'package:entree_sortie/screens/user_login.dart';
 import 'package:entree_sortie/utils/constant.dart';
@@ -33,7 +34,8 @@ class _RegisterPacketState extends State<RegisterPacket> {
                   fit: BoxFit.fitWidth,
                 ),
               ),
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     onTap: () {
@@ -55,6 +57,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
                       ),
                     ),
                   ),
+                  goHomeButton(context),
                 ],
               ),
             ),
@@ -81,13 +84,23 @@ class _RegisterPacketState extends State<RegisterPacket> {
             const SizedBox(height: kSizedBoxHeight),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddPacket(
-                      ltaNumber: controllerLtaNumber.text,
-                      clientName: controllerPacketName.text,
+                if (controllerLtaNumber.text.isNotEmpty &&
+                    controllerPacketName.text.isNotEmpty) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddPacket(
+                        ltaNumber: controllerLtaNumber.text,
+                        clientName: controllerPacketName.text,
+                      ),
                     ),
+                  );
+                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Les champs ne peuvent pas rester vide'),
+                    backgroundColor: Colors.green, // Warning color
+                    duration: Duration(seconds: 3), // Duration of SnackBar
                   ),
                 );
               },
