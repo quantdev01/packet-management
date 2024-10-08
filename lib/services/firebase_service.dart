@@ -58,7 +58,7 @@ class FirebaseService {
     }
   }
 
-  Future<double?> getTotal(String clientName) async {
+  Future<double> getTotal(String clientName) async {
     try {
       // Reference the document for the given clientName in the 'clients' collection
       DocumentReference<Map<String, dynamic>> clientData =
@@ -71,13 +71,14 @@ class FirebaseService {
       if (snapshot.exists) {
         Map<String, dynamic>? data = snapshot.data();
         if (data != null && data.containsKey('total_to_pay')) {
-          return data['total_to_pay']?.toDouble();
+          log('Total price to pay feched from the cloud ${data['total_to_pay']}');
+          return double.parse(data['total_to_pay']);
         }
       }
-      return null; // Return null if total is not found
+      return 0.0; // Return null if total is not found
     } catch (e) {
       log('Error getting total for client $clientName: $e');
-      return null;
+      return 0.0;
     }
   }
 }

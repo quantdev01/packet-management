@@ -112,6 +112,8 @@ class _AddPacketState extends State<AddPacket> {
   double total = 0;
   double fullTotal = 0;
 
+  FirebaseService instance = FirebaseService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -288,7 +290,7 @@ class _AddPacketState extends State<AddPacket> {
               SizedBox(height: 30),
 
               GestureDetector(
-                onTap: () {
+                onTap: () async {
                   final weight = double.parse(controllerTotalWeight.text);
                   final ltaPrice = double.parse(controllerPriceForWeight.text);
 
@@ -303,7 +305,8 @@ class _AddPacketState extends State<AddPacket> {
 
                   final packetNumber =
                       double.parse(controllerPacketNumber.text);
-
+                  double fechedTotal = await instance.getTotal(clientName);
+                  log('Total to pay here we go $fechedTotal');
                   total = weight * ltaPrice + 1 + credit;
 
                   packetsListClient.addAll({
@@ -318,9 +321,9 @@ class _AddPacketState extends State<AddPacket> {
 
                   setState(() {
                     if (fullTotal == 0) {
-                      fullTotal = total;
+                      fullTotal = total + fechedTotal;
                     } else {
-                      fullTotal += total;
+                      fullTotal += total + fechedTotal;
                     }
 
                     if (controllerPacketName.text != '' &&
