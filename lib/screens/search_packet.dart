@@ -207,35 +207,6 @@ class _SearchPacketState extends State<SearchPacket> {
                                 )
                               ],
                             ),
-                            // title: Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //   children: [
-                            //     Text(
-                            //       '${clientData['lta_number']}',
-                            //       style: TextStyle(fontSize: kDefaultFontSize),
-                            //       maxLines: 1,
-                            //       overflow: TextOverflow.ellipsis,
-                            //     ),
-                            //     Text(
-                            //       '${clientData['name']}',
-                            //       style: TextStyle(fontSize: kDefaultFontSize),
-                            //       maxLines: 1,
-                            //       overflow: TextOverflow.ellipsis,
-                            //     ),
-                            //     Text(
-                            //       '$day ${months[month]} $year à ${hour}h${minute}min',
-                            //       style: TextStyle(fontSize: kDefaultFontSize),
-                            //       maxLines: 1,
-                            //       overflow: TextOverflow.ellipsis,
-                            //     ),
-                            //     Text(
-                            //       '$day1 ${months[month1]} $year1 à ${hour1}h${minute1}min',
-                            //       style: TextStyle(fontSize: kDefaultFontSize),
-                            //       maxLines: 1,
-                            //       overflow: TextOverflow.ellipsis,
-                            //     ),
-                            //   ],
-                            // ),
                             subtitle: Text(
                               '${clientData['total_to_pay']}\$',
                               maxLines: 1,
@@ -244,7 +215,6 @@ class _SearchPacketState extends State<SearchPacket> {
                                 color: kBlueColor,
                               ),
                             ),
-
                             onTap: () => _showProductsDialog(context, clientId),
                           ),
                         ),
