@@ -77,38 +77,41 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
               Container(
                 height: 50,
                 color: kBlueColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Text(
-                        'Infos Client',
-                        style: kTextStyleTableTitleMobile,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Text(
+                          'Infos Client',
+                          style: kTextStyleTableTitleMobile,
+                        ),
                       ),
-                    ),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Text(
-                        'Dépot',
-                        style: kTextStyleTableTitleMobile,
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Text(
+                          'Dépot',
+                          style: kTextStyleTableTitleMobile,
+                        ),
                       ),
-                    ),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Text(
-                        'Retrait',
-                        style: kTextStyleTableTitleMobile,
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Text(
+                          'Retrait',
+                          style: kTextStyleTableTitleMobile,
+                        ),
                       ),
-                    ),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Text(
-                        'Etat',
-                        style: kTextStyleTableTitleMobile,
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Text(
+                          'Etat',
+                          style: kTextStyleTableTitleMobile,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               StreamBuilder<QuerySnapshot>(
@@ -259,7 +262,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
               final products = productSnapshot.data!.docs;
 
               return SizedBox(
-                height: 200,
+                height: 400,
                 width: 300,
                 child: ListView.builder(
                   itemCount: products.length,
@@ -301,7 +304,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: const Text('Fermer'),
             ),
           ],
         );
