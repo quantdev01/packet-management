@@ -3,6 +3,7 @@ import 'package:entree_sortie/screens/user_login.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchPacket extends StatefulWidget {
@@ -70,6 +71,64 @@ class _SearchPacketState extends State<SearchPacket> {
               ),
             ),
             const SizedBox(height: kSizedBoxHeight),
+            Container(
+              height: 50,
+              color: kBlueColor,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40),
+                    child: TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text(
+                        'Numéro LTA',
+                        style: kTextStyleTableTitleMobile,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 230),
+                    child: TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text(
+                        'Infos Client',
+                        style: kTextStyleTableTitleMobile,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 230),
+                    child: TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text(
+                        'Dépot',
+                        style: kTextStyleTableTitleMobile,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 260),
+                    child: TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text(
+                        'Retrait',
+                        style: kTextStyleTableTitleMobile,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 265),
+                    child: TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text(
+                        'Etat',
+                        style: kTextStyleTableTitleMobile,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('clients')
@@ -143,87 +202,85 @@ class _SearchPacketState extends State<SearchPacket> {
 
                     return Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: SingleChildScrollView(
-                        child: Card(
-                          child: ListTile(
-                            dense: true,
-                            title: Table(
-                              border: TableBorder.all(color: Colors.white30),
-                              children: [
-                                TableRow(
-                                  children: [
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          '${clientData['lta_number']}',
-                                          style: kTextStyleNormal,
-                                        ),
-                                      ),
-                                    ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text('${clientData['name']}'),
-                                      ),
-                                    ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                            '$day ${months[month]} $year à ${hour}h${minute}min'),
-                                      ),
-                                    ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                            '$day1 ${months[month1]} $year1 à ${hour1}h${minute1}min'),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 20),
+                      child: Card(
+                        child: ListTile(
+                          dense: true,
+                          title: Table(
+                            border: TableBorder.all(color: Colors.white30),
+                            children: [
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        isDelivered
-                                            ? 'Livrer'
-                                            : 'En cours de livraison', // Display status based on `status`
-                                        style: TextStyle(
-                                          color: isDelivered
-                                              ? Colors.green
-                                              : Colors.orange,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        '${clientData['lta_number']}',
+                                        style: kTextStyleNormal,
                                       ),
                                     ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            subtitle: Text(
-                              '${clientData['total_to_pay']}\$',
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: kBlueColor,
-                              ),
-                            ),
-                            onTap: () => _showProductsDialog(context, clientId),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text('${clientData['name']}'),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                          '$day ${months[month]} $year à ${hour}h${minute}min'),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                          '$day1 ${months[month1]} $year1 à ${hour1}h${minute1}min'),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Text(
+                                      isDelivered
+                                          ? 'Livrer'
+                                          : 'En cours de livraison', // Display status based on `status`
+                                      style: TextStyle(
+                                        color: isDelivered
+                                            ? Colors.green
+                                            : Colors.orange,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
+                          subtitle: Text(
+                            '${clientData['total_to_pay']}\$',
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: kBlueColor,
+                            ),
+                          ),
+                          onTap: () => _showProductsDialog(context, clientId),
                         ),
                       ),
                     );
                   },
                 );
               },
-            ),
+            )
           ],
         ),
       ),
