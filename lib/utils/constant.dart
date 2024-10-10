@@ -19,6 +19,18 @@ const kTextStyleNormal = TextStyle(
   color: Colors.black87,
 );
 
+const kTextStyleMobile = TextStyle(
+  // fontSize: 14,
+  color: Colors.black87,
+  fontWeight: FontWeight.bold,
+);
+
+const kTextStyleTableTitleMobile = TextStyle(
+  // fontSize: 14,
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+);
+
 const Color kBlueColor = Color.fromARGB(255, 0, 75, 172);
 const Color kRedColor = Color.fromARGB(255, 172, 0, 0);
 const Color kWhiteColor = Colors.white;

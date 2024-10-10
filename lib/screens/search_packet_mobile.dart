@@ -66,11 +66,51 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                   });
                 },
                 decoration: InputDecoration(
-                  prefixIcon: Icon(FontAwesomeIcons.magnifyingGlass),
-                  hintText: 'Nom du client / numero LTA',
+                  prefixIcon: Icon(
+                    FontAwesomeIcons.magnifyingGlass,
+                    size: 20,
+                  ),
+                  hintText: 'Nom du client / Numéro LTA',
                 ),
               ),
               const SizedBox(height: kSizedBoxHeight),
+              Container(
+                height: 50,
+                color: kBlueColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text(
+                        'Infos Client',
+                        style: kTextStyleTableTitleMobile,
+                      ),
+                    ),
+                    TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text(
+                        'Dépot',
+                        style: kTextStyleTableTitleMobile,
+                      ),
+                    ),
+                    TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text(
+                        'Retrait',
+                        style: kTextStyleTableTitleMobile,
+                      ),
+                    ),
+                    TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text(
+                        'Etat',
+                        style: kTextStyleTableTitleMobile,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('clients')
@@ -125,40 +165,62 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                       final day1 = modifiedAt.toDate().day;
                       final month1 = modifiedAt.toDate().month;
 
-                      return ListTile(
-                        title: Text(
-                          '${clientData['name']}   $day/$month $hour:$minute\'   $day1/$month1 $hour1:$minute1\'',
-                          style: TextStyle(fontSize: kDefaultFontSize),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        subtitle: Text(
-                          '${clientData['total_to_pay']}\$',
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: kBlueColor,
-                          ),
-                        ),
-                        // trailing: Text(
-                        //   isDelivered
-                        //       ? 'Livrer'
-                        //       : 'En cours', // Display status based on `status`
-                        //   style: TextStyle(
-                        //     color: isDelivered ? Colors.green : Colors.orange,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
-                        trailing: isDelivered
-                            ? Icon(
-                                FontAwesomeIcons.circleCheck,
-                                color: Colors.green,
+                      return Card(
+                        child: ListTile(
+                          dense: true,
+                          title: Table(
+                            border: TableBorder.all(color: Colors.white30),
+                            children: [
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Text(
+                                      '${clientData['name']}',
+                                      style: kTextStyleMobile,
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text('$day/$month $hour:$minute'),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child:
+                                          Text('$day1/$month1 $hour1:$minute1'),
+                                    ),
+                                  ),
+                                ],
                               )
-                            : Icon(
-                                FontAwesomeIcons.spinner,
-                                color: Colors.orange,
-                              ),
-                        onTap: () => _showProductsDialog(context, clientId),
+                            ],
+                          ),
+                          subtitle: Text(
+                            '${clientData['total_to_pay']}\$',
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: kBlueColor,
+                            ),
+                          ),
+                          trailing: isDelivered
+                              ? Icon(
+                                  FontAwesomeIcons.circleCheck,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  FontAwesomeIcons.spinner,
+                                  color: Colors.orange,
+                                ),
+                          onTap: () => _showProductsDialog(context, clientId),
+                        ),
                       );
                     },
                   );
