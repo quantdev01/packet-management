@@ -1,5 +1,4 @@
 import 'package:entree_sortie/screens/admin_login_mobile.dart';
-import 'package:entree_sortie/screens/user_login.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -34,24 +33,24 @@ class HomeMobile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const UserLogin(),
-                        ),
-                      );
-                    },
-                    child: myButton(
-                      buttonColor: kBlueColor,
-                      textColor: kWhiteColor,
-                      text: 'Utilisateur',
-                      height: kBoxHeightMobile,
-                      width: kBoxWidhtMobile,
-                      textSize: kSizeTextBoxMobile,
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => const UserLogin(),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: myButton(
+                  //     buttonColor: kBlueColor,
+                  //     textColor: kWhiteColor,
+                  //     text: 'Utilisateur',
+                  //     height: kBoxHeightMobile,
+                  //     width: kBoxWidhtMobile,
+                  //     textSize: kSizeTextBoxMobile,
+                  //   ),
+                  // ),
                   const SizedBox(height: 30),
                   GestureDetector(
                     onTap: () {
@@ -62,8 +61,8 @@ class HomeMobile extends StatelessWidget {
                       );
                     },
                     child: myButton(
-                      buttonColor: kWhiteColor,
-                      textColor: Colors.black,
+                      buttonColor: kBlueColor,
+                      textColor: Colors.white,
                       text: 'Administrateur',
                       height: kBoxHeightMobile,
                       width: kBoxWidhtMobile,

@@ -97,7 +97,7 @@ class _RegisterPacketState extends State<RegisterPacket> {
                 }
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Les champs ne peuvent pas rester vide'),
+                    content: Text('Connexion reussi'),
                     backgroundColor: Colors.green, // Warning color
                     duration: Duration(seconds: 3), // Duration of SnackBar
                   ),

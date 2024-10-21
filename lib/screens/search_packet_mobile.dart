@@ -20,217 +20,218 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 100,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(kBackgroundImage),
-                    fit: BoxFit.cover,
-                  ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 100,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(kBackgroundImage),
+                  fit: BoxFit.cover,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AdminLoginMobile()),
+                      );
+                    },
+                    child: backToPreviousMobile(context),
+                  ),
+                  Text(
+                    'Rechereche un colis',
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: kWhiteColor,
+                    ),
+                  ),
+                  goHomeButtonMobile(context),
+                ],
+              ),
+            ),
+            const SizedBox(height: kSizeNormalText),
+            TextField(
+              controller: controllerSearch,
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value.toLowerCase();
+                });
+              },
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  FontAwesomeIcons.magnifyingGlass,
+                  size: 20,
+                ),
+                hintText: 'Nom du client / Numéro LTA',
+              ),
+            ),
+            const SizedBox(height: kSizedBoxHeight),
+            Container(
+              color: kBlueColor,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                ),
+                child: Table(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AdminLoginMobile()),
-                        );
-                      },
-                      child: backToPreviousMobile(context),
+                    TableRow(
+                      children: [
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.top,
+                          child: Text(
+                            'Infos Client',
+                            style: kTextStyleTableTitleMobile,
+                          ),
+                        ),
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Text(
+                            'Dépot',
+                            style: kTextStyleTableTitleMobile,
+                          ),
+                        ),
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Text(
+                            'Retrait',
+                            style: kTextStyleTableTitleMobile,
+                          ),
+                        ),
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Text(
+                            'Etat',
+                            style: kTextStyleTableTitleMobile,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Rechereche un colis',
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: kWhiteColor,
-                      ),
-                    ),
-                    goHomeButtonMobile(context),
                   ],
                 ),
               ),
-              const SizedBox(height: kSizeNormalText),
-              TextField(
-                controller: controllerSearch,
-                onChanged: (value) {
-                  setState(() {
-                    searchQuery = value.toLowerCase();
-                  });
-                },
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    FontAwesomeIcons.magnifyingGlass,
-                    size: 20,
-                  ),
-                  hintText: 'Nom du client / Numéro LTA',
-                ),
-              ),
-              const SizedBox(height: kSizedBoxHeight),
-              Container(
-                height: 50,
-                color: kBlueColor,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Text(
-                          'Infos Client',
-                          style: kTextStyleTableTitleMobile,
-                        ),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Text(
-                          'Dépot',
-                          style: kTextStyleTableTitleMobile,
-                        ),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Text(
-                          'Retrait',
-                          style: kTextStyleTableTitleMobile,
-                        ),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Text(
-                          'Etat',
-                          style: kTextStyleTableTitleMobile,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('clients')
-                    .orderBy('created_at', descending: true)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+            ),
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('clients')
+                  .orderBy('created_at', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const Center(child: Text('No clients found.'));
-                  }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text('No clients found.'));
+                }
 
-                  final clients = snapshot.data!.docs;
+                final clients = snapshot.data!.docs;
 
-                  // Filter clients based on search query (search by name or LTA number)
-                  final filteredClients = clients.where((doc) {
-                    final data = doc.data() as Map<String, dynamic>;
-                    final name = data['name'].toString().toLowerCase();
-                    final ltaNumber =
-                        data['lta_number'].toString().toLowerCase();
-                    return name.contains(searchQuery) ||
-                        ltaNumber.contains(searchQuery);
-                  }).toList();
+                // Filter clients based on search query (search by name or LTA number)
+                final filteredClients = clients.where((doc) {
+                  final data = doc.data() as Map<String, dynamic>;
+                  final name = data['name'].toString().toLowerCase();
+                  final ltaNumber = data['lta_number'].toString().toLowerCase();
+                  return name.contains(searchQuery) ||
+                      ltaNumber.contains(searchQuery);
+                }).toList();
 
-                  return ListView.builder(
-                    shrinkWrap: true, // Required for nesting in ScrollView
-                    itemCount: filteredClients.length,
-                    itemBuilder: (context, index) {
-                      final clientData =
-                          filteredClients[index].data() as Map<String, dynamic>;
+                return ListView.builder(
+                  shrinkWrap: true, // Required for nesting in ScrollView
+                  itemCount: filteredClients.length,
+                  itemBuilder: (context, index) {
+                    final clientData =
+                        filteredClients[index].data() as Map<String, dynamic>;
 
-                      final clientId = filteredClients[index].id;
+                    final clientId = filteredClients[index].id;
 
-                      // Check the status field (default: false)
-                      final isDelivered = clientData['status'] ?? false;
-                      // final totalWeight = clientData['total_weight'] ?? 0;
+                    // Check the status field (default: false)
+                    final isDelivered = clientData['status'] ?? false;
+                    // final totalWeight = clientData['total_weight'] ?? 0;
 
-                      Timestamp createdAt = clientData['created_at'];
-                      Timestamp modifiedAt = clientData['modified_at'];
+                    Timestamp createdAt = clientData['created_at'];
+                    Timestamp modifiedAt = clientData['modified_at'];
 
-                      final hour = createdAt.toDate().hour;
-                      final minute = createdAt.toDate().minute;
-                      final day = createdAt.toDate().day;
-                      final month = createdAt.toDate().month;
+                    final hour = createdAt.toDate().hour;
+                    final minute = createdAt.toDate().minute;
+                    final day = createdAt.toDate().day;
+                    final month = createdAt.toDate().month;
 
-                      //* TO know when the packet was taken
+                    //* TO know when the packet was taken
 
-                      final hour1 = modifiedAt.toDate().hour;
-                      final minute1 = modifiedAt.toDate().minute;
-                      final day1 = modifiedAt.toDate().day;
-                      final month1 = modifiedAt.toDate().month;
+                    final hour1 = modifiedAt.toDate().hour;
+                    final minute1 = modifiedAt.toDate().minute;
+                    final day1 = modifiedAt.toDate().day;
+                    final month1 = modifiedAt.toDate().month;
 
-                      return Card(
-                        child: ListTile(
-                          dense: true,
-                          title: Table(
-                            border: TableBorder.all(color: Colors.white30),
-                            children: [
-                              TableRow(
-                                children: [
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Text(
-                                      '${clientData['name']}',
-                                      style: kTextStyleMobile,
-                                    ),
+                    return Card(
+                      child: ListTile(
+                        dense: true,
+                        title: Table(
+                          border: TableBorder.all(color: Colors.white30),
+                          children: [
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Text(
+                                    '${clientData['name']}',
+                                    style: kTextStyleMobile,
                                   ),
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text('$day/$month $hour:$minute'),
-                                    ),
-                                  ),
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child:
-                                          Text('$day1/$month1 $hour1:$minute1'),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          subtitle: Text(
-                            '${clientData['total_to_pay']}\$',
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: kBlueColor,
-                            ),
-                          ),
-                          trailing: isDelivered
-                              ? Icon(
-                                  FontAwesomeIcons.circleCheck,
-                                  color: Colors.green,
-                                )
-                              : Icon(
-                                  FontAwesomeIcons.spinner,
-                                  color: Colors.orange,
                                 ),
-                          onTap: () => _showProductsDialog(context, clientId),
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('$day/$month $hour:$minute'),
+                                  ),
+                                ),
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child:
+                                        Text('$day1/$month1 $hour1:$minute1'),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
+                        subtitle: Text(
+                          '${clientData['total_to_pay']}\$',
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: kBlueColor,
+                          ),
+                        ),
+                        trailing: isDelivered
+                            ? Icon(
+                                FontAwesomeIcons.circleCheck,
+                                color: Colors.green,
+                              )
+                            : Icon(
+                                FontAwesomeIcons.spinner,
+                                color: Colors.orange,
+                              ),
+                        onTap: () => _showProductsDialog(context, clientId),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
