@@ -1,4 +1,4 @@
-import 'package:entree_sortie/screens/home.dart';
+import 'package:entree_sortie/screens/home_or_mobile_screen.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -119,7 +119,7 @@ Widget backToMenuButton(BuildContext context) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const Home(),
+                builder: (context) => const HomeOrMobileScreen(),
               ),
             );
           },
@@ -201,7 +201,7 @@ GestureDetector goHomeButton(BuildContext context) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const Home(),
+          builder: (context) => const HomeOrMobileScreen(),
         ),
       );
     },
@@ -223,7 +223,7 @@ GestureDetector goHomeButtonMobile(BuildContext context) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const Home(),
+          builder: (context) => const HomeOrMobileScreen(),
         ),
       );
     },
