@@ -18,59 +18,63 @@ class HomeMobile extends StatelessWidget {
           style: TextStyle(fontFamily: 'Condensed'),
         ),
       ),
-      body: Expanded(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(kBackgroundImage),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 30),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const UserLogin(),
-                    ),
-                  );
-                },
-                child: myButton(
-                  buttonColor: kBlueColor,
-                  textColor: kWhiteColor,
-                  text: 'Utilisateur',
-                  height: kBoxHeightMobile,
-                  width: kBoxWidhtMobile,
-                  textSize: kSizeTextBoxMobile,
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(kBackgroundImage),
+                  fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(height: 30),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AdminLoginMobile()),
-                  );
-                },
-                child: myButton(
-                  buttonColor: kWhiteColor,
-                  textColor: Colors.black,
-                  text: 'Administrateur',
-                  height: kBoxHeightMobile,
-                  width: kBoxWidhtMobile,
-                  textSize: kSizeTextBoxMobile,
-                ),
-              )
-            ],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserLogin(),
+                        ),
+                      );
+                    },
+                    child: myButton(
+                      buttonColor: kBlueColor,
+                      textColor: kWhiteColor,
+                      text: 'Utilisateur',
+                      height: kBoxHeightMobile,
+                      width: kBoxWidhtMobile,
+                      textSize: kSizeTextBoxMobile,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AdminLoginMobile()),
+                      );
+                    },
+                    child: myButton(
+                      buttonColor: kWhiteColor,
+                      textColor: Colors.black,
+                      text: 'Administrateur',
+                      height: kBoxHeightMobile,
+                      width: kBoxWidhtMobile,
+                      textSize: kSizeTextBoxMobile,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
