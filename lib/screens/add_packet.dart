@@ -66,7 +66,7 @@ class _AddPacketState extends State<AddPacket> {
 
   //* Firebase instance
   FirebaseService firebaseService = FirebaseService();
-  var isTakingCredit;
+  dynamic isTakingCredit;
 
   @override
   void dispose() {

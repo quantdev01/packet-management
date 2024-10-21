@@ -10,76 +10,82 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Expanded(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(kBackgroundImage),
-              fit: BoxFit.cover,
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(kBackgroundImage),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  title(text: 'Agence Kindu Maendeleo\nA K M'),
+                  const SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserLogin(),
+                        ),
+                      );
+                    },
+                    child: myButton(
+                      buttonColor: kBlueColor,
+                      textColor: kWhiteColor,
+                      text: 'Goma entrée',
+                      height: kBoxHeight,
+                      width: kBoxWidht,
+                      textSize: kSizeTextBox,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserLogin()),
+                      );
+                    },
+                    child: myButton(
+                      buttonColor: kWhiteColor,
+                      textColor: kBlueColor,
+                      text: 'Kindu sortie',
+                      height: kBoxHeight,
+                      width: kBoxWidht,
+                      textSize: kSizeTextBox,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AdminLogin()),
+                      );
+                    },
+                    child: myButton(
+                      buttonColor: kBlueColor,
+                      textColor: Colors.white,
+                      text: 'Administrateur',
+                      height: kBoxHeight,
+                      width: kBoxWidht,
+                      textSize: kSizeTextBox,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              title(text: 'Association Kindu Maendeleo\nA K M'),
-              const SizedBox(height: 30),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const UserLogin(),
-                    ),
-                  );
-                },
-                child: myButton(
-                  buttonColor: kBlueColor,
-                  textColor: kWhiteColor,
-                  text: 'Goma entrée',
-                  height: kBoxHeight,
-                  width: kBoxWidht,
-                  textSize: kSizeTextBox,
-                ),
-              ),
-              const SizedBox(height: 30),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const UserLogin()),
-                  );
-                },
-                child: myButton(
-                  buttonColor: kWhiteColor,
-                  textColor: kBlueColor,
-                  text: 'Kindu sortie',
-                  height: kBoxHeight,
-                  width: kBoxWidht,
-                  textSize: kSizeTextBox,
-                ),
-              ),
-              const SizedBox(height: 30),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AdminLogin()),
-                  );
-                },
-                child: myButton(
-                  buttonColor: kBlueColor,
-                  textColor: Colors.white,
-                  text: 'Administrateur',
-                  height: kBoxHeight,
-                  width: kBoxWidht,
-                  textSize: kSizeTextBox,
-                ),
-              )
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }
