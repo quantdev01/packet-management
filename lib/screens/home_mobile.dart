@@ -12,10 +12,7 @@ class HomeMobile extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: kBlueColor,
-        title: const Text(
-          'Agence Kindu Maendeleo',
-          style: TextStyle(fontFamily: 'Condensed'),
-        ),
+        title: const Text('Agence Kindu Maendeleo'),
       ),
       body: Column(
         children: [
@@ -32,7 +29,22 @@ class HomeMobile extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 30),
+                  Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    width: 170,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Text(
+                      'Bienvenue',
+                      style: TextStyle(
+                        color: kBlueColor,
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
+
                   // GestureDetector(
                   //   onTap: () {
                   //     Navigator.push(
