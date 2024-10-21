@@ -84,31 +84,43 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                     TableRow(
                       children: [
                         TableCell(
-                          verticalAlignment: TableCellVerticalAlignment.top,
-                          child: Text(
-                            'Infos Client',
-                            style: kTextStyleTableTitleMobile,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 6),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Infos Client',
+                              style: kTextStyleTableTitleMobile,
+                            ),
                           ),
                         ),
                         TableCell(
-                          verticalAlignment: TableCellVerticalAlignment.middle,
-                          child: Text(
-                            'Dépot',
-                            style: kTextStyleTableTitleMobile,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Dépot',
+                              style: kTextStyleTableTitleMobile,
+                            ),
                           ),
                         ),
                         TableCell(
-                          verticalAlignment: TableCellVerticalAlignment.middle,
-                          child: Text(
-                            'Retrait',
-                            style: kTextStyleTableTitleMobile,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 30),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Retrait',
+                              style: kTextStyleTableTitleMobile,
+                            ),
                           ),
                         ),
                         TableCell(
-                          verticalAlignment: TableCellVerticalAlignment.middle,
-                          child: Text(
-                            'Etat',
-                            style: kTextStyleTableTitleMobile,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 30),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Etat',
+                              style: kTextStyleTableTitleMobile,
+                            ),
                           ),
                         ),
                       ],
