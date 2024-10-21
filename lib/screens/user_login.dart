@@ -15,11 +15,14 @@ class UserLogin extends StatefulWidget {
 }
 
 class _UserLoginState extends State<UserLogin> {
+  TextEditingController controllerUsername = TextEditingController();
+  TextEditingController controllerPassword = TextEditingController();
+
   bool isPassword = true;
+
   Widget myTextFieldPassword({
     required String hintText,
     required IconData icon,
-    required bool isPassword,
     required double height,
     required double width,
     required double textSize,
@@ -66,15 +69,22 @@ class _UserLoginState extends State<UserLogin> {
                       fontSize: textSize,
                     ),
                     border: InputBorder.none,
-                    suffixIcon: GestureDetector(
-                      child: Icon(isPassword
-                          ? FontAwesomeIcons.eye
-                          : FontAwesomeIcons.eyeSlash),
-                      onTap: () {
-                        setState(() {
-                          isPassword = !isPassword;
-                        });
-                      },
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: GestureDetector(
+                        child: Icon(
+                          isPassword
+                              ? FontAwesomeIcons.eye
+                              : FontAwesomeIcons.eyeSlash,
+                          color: Colors.grey,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            isPassword = !isPassword;
+                            controllerPassword.text = controllerPassword.text;
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -86,8 +96,6 @@ class _UserLoginState extends State<UserLogin> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controllerUsername = TextEditingController();
-    TextEditingController controllerPassword = TextEditingController();
     final media = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -135,7 +143,6 @@ class _UserLoginState extends State<UserLogin> {
                     height: kBoxHeight,
                     width: kBoxWidht,
                     textSize: kSizeTextBox,
-                    isPassword: isPassword,
                     icon: FontAwesomeIcons.lock,
                     hintText: 'Mot de passe',
                   ),

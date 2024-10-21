@@ -6,13 +6,94 @@ import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class AdminLogin extends StatelessWidget {
+class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
 
   @override
+  State<AdminLogin> createState() => _AdminLoginState();
+}
+
+class _AdminLoginState extends State<AdminLogin> {
+  TextEditingController controllerUsername = TextEditingController();
+  TextEditingController controllerPassword = TextEditingController();
+
+  bool isPassword = true;
+
+  Widget myTextFieldPassword({
+    required String hintText,
+    required IconData icon,
+    required double height,
+    required double width,
+    required double textSize,
+    required TextEditingController controller,
+  }) =>
+      Column(
+        children: [
+          Text(
+            hintText,
+            style: const TextStyle(
+              fontSize: 25,
+              color: Colors.black54,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: height,
+            width: width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(50),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  blurStyle: BlurStyle.inner,
+                )
+              ],
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: TextField(
+                  controller: controller,
+                  obscureText: isPassword,
+                  cursorColor: Colors.grey,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(icon),
+                    prefixIconColor: Colors.grey,
+                    hintText: hintText,
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: textSize,
+                    ),
+                    border: InputBorder.none,
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: GestureDetector(
+                        child: Icon(
+                          isPassword
+                              ? FontAwesomeIcons.eye
+                              : FontAwesomeIcons.eyeSlash,
+                          color: Colors.grey,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            isPassword = !isPassword;
+                            controllerPassword.text = controllerPassword.text;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+  @override
   Widget build(BuildContext context) {
-    TextEditingController controllerUsername = TextEditingController();
-    TextEditingController controllerPassword = TextEditingController();
     return Scaffold(
       body: Column(
         children: [
@@ -48,12 +129,11 @@ class AdminLogin extends StatelessWidget {
                       icon: FontAwesomeIcons.circleUser,
                       hintText: 'Nom d\'utilisateur'),
                   const SizedBox(height: 30),
-                  myTextField(
+                  myTextFieldPassword(
                     controller: controllerPassword,
                     height: kBoxHeight,
                     width: kBoxWidht,
                     textSize: kSizeTextBox,
-                    isPassword: true,
                     icon: FontAwesomeIcons.lock,
                     hintText: 'Mot de passe',
                   ),

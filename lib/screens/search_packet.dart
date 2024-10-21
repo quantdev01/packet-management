@@ -20,267 +20,264 @@ class _SearchPacketState extends State<SearchPacket> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(kBackgroundImage),
-                  fit: BoxFit.cover,
+        //TODO Find a way of making the search to work without
+        //TODO rebuilding all the screen
+        //* alerts
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 200,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(kBackgroundImage),
+                    fit: BoxFit.fitWidth,
+                  ),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => UserLogin()),
-                        );
-                      },
-                      child: backToMenuButton(context)),
-                  const Center(
-                    child: Text(
-                      'Rechereche un colis',
-                      style: TextStyle(
-                        fontSize: kSizeTitle,
-                        color: kWhiteColor,
-                      ),
-                    ),
-                  ),
-                  goHomeButton(context),
-                ],
-              ),
-            ),
-            const SizedBox(height: 30),
-            TextField(
-              controller: controllerSearch,
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value.toLowerCase();
-                });
-              },
-              decoration: InputDecoration(
-                prefixIcon: Icon(FontAwesomeIcons.magnifyingGlass),
-                hintText: 'Nom du client / numero LTA',
-              ),
-            ),
-            const SizedBox(height: kSizedBoxHeight),
-            Container(
-              height: 50,
-              color: kBlueColor,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40),
-                    child: TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserLogin()),
+                          );
+                        },
+                        child: backToMenuButton(context)),
+                    const Center(
                       child: Text(
-                        'Numéro LTA',
-                        style: kTextStyleTableTitleMobile,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 230),
-                    child: TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Text(
-                        'Infos Client',
-                        style: kTextStyleTableTitleMobile,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 230),
-                    child: TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Text(
-                        'Dépot',
-                        style: kTextStyleTableTitleMobile,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 260),
-                    child: TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Text(
-                        'Retrait',
-                        style: kTextStyleTableTitleMobile,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 265),
-                    child: TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Text(
-                        'Etat',
-                        style: kTextStyleTableTitleMobile,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('clients')
-                  .orderBy(
-                    'created_at',
-                    descending: true,
-                  )
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text('No clients found.'));
-                }
-
-                final clients = snapshot.data!.docs;
-
-                // Filter clients based on search query (search by name or LTA number)
-                final filteredClients = clients.where((doc) {
-                  final data = doc.data() as Map<String, dynamic>;
-                  final name = data['name'].toString().toLowerCase();
-                  final ltaNumber = data['lta_number'].toString().toLowerCase();
-                  return name.contains(searchQuery) ||
-                      ltaNumber.contains(searchQuery);
-                }).toList();
-
-                return ListView.builder(
-                  shrinkWrap: true, // Required for nesting in ScrollView
-                  itemCount: filteredClients.length,
-                  itemBuilder: (context, index) {
-                    final clientData =
-                        filteredClients[index].data() as Map<String, dynamic>;
-                    final clientId = filteredClients[index].id;
-
-                    // Check the status field (default: false)
-                    final isDelivered = clientData['status'] ?? false;
-                    // final totalWeight = clientData['total_weight'] ?? 0;
-                    Timestamp createdAt = clientData['created_at'];
-                    Timestamp modifiedAt = clientData['modified_at'];
-
-                    final hour = createdAt.toDate().hour;
-                    final minute = createdAt.toDate().minute;
-                    final day = createdAt.toDate().day;
-                    final month = createdAt.toDate().month;
-                    final year = createdAt.toDate().year;
-
-                    //*  TO know when the packet was taken
-
-                    final hour1 = modifiedAt.toDate().hour;
-                    final minute1 = modifiedAt.toDate().minute;
-                    final day1 = modifiedAt.toDate().day;
-                    final month1 = modifiedAt.toDate().month;
-                    final year1 = modifiedAt.toDate().year;
-                    final months = [
-                      'Empty',
-                      'Janvier',
-                      'Février',
-                      'Mars',
-                      'Avril',
-                      'Mai',
-                      'Juin',
-                      'Juillet',
-                      'Aout',
-                      'Septembre',
-                      'Octobre',
-                      'Novembre',
-                      'Decembre'
-                    ];
-
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Card(
-                        child: ListTile(
-                          dense: true,
-                          title: Table(
-                            border: TableBorder.all(color: Colors.white30),
-                            children: [
-                              TableRow(
-                                children: [
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        '${clientData['lta_number']}',
-                                        style: kTextStyleNormal,
-                                      ),
-                                    ),
-                                  ),
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text('${clientData['name']}'),
-                                    ),
-                                  ),
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          '$day ${months[month]} $year à ${hour}h${minute}min'),
-                                    ),
-                                  ),
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          '$day1 ${months[month1]} $year1 à ${hour1}h${minute1}min'),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      isDelivered
-                                          ? 'Livrer'
-                                          : 'En cours de livraison', // Display status based on `status`
-                                      style: TextStyle(
-                                        color: isDelivered
-                                            ? Colors.green
-                                            : Colors.orange,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          subtitle: Text(
-                            '${clientData['total_to_pay']}\$',
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: kBlueColor,
-                            ),
-                          ),
-                          onTap: () => _showProductsDialog(context, clientId),
+                        'Recherchez un colis',
+                        style: TextStyle(
+                          fontSize: kSizeTitle,
+                          color: kWhiteColor,
                         ),
                       ),
-                    );
-                  },
-                );
-              },
-            )
-          ],
+                    ),
+                    goHomeButton(context),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              TextField(
+                controller: controllerSearch,
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value.toLowerCase();
+                  });
+                },
+                decoration: InputDecoration(
+                  prefixIcon: Icon(FontAwesomeIcons.magnifyingGlass),
+                  hintText: 'Nom du client / numero LTA',
+                ),
+              ),
+              const SizedBox(height: kSizedBoxHeight),
+              Container(
+                height: 50,
+                color: kBlueColor,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 15, left: 50),
+                  child: Table(
+                    children: [
+                      TableRow(children: [
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Text(
+                            'Numéro LTA',
+                            style: kTextStyleTableTitleMobile,
+                          ),
+                        ),
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Text(
+                            'Infos Client',
+                            style: kTextStyleTableTitleMobile,
+                          ),
+                        ),
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Text(
+                            'Dépot',
+                            style: kTextStyleTableTitleMobile,
+                          ),
+                        ),
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Text(
+                            'Retrait',
+                            style: kTextStyleTableTitleMobile,
+                          ),
+                        ),
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Text(
+                            'Etat',
+                            style: kTextStyleTableTitleMobile,
+                          ),
+                        ),
+                      ])
+                    ],
+                  ),
+                ),
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('clients')
+                    .orderBy(
+                      'created_at',
+                      descending: true,
+                    )
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('No clients found.'));
+                  }
+
+                  final clients = snapshot.data!.docs;
+
+                  // Filter clients based on search query (search by name or LTA number)
+                  final filteredClients = clients.where((doc) {
+                    final data = doc.data() as Map<String, dynamic>;
+                    final name = data['name'].toString().toLowerCase();
+                    final ltaNumber =
+                        data['lta_number'].toString().toLowerCase();
+                    return name.contains(searchQuery) ||
+                        ltaNumber.contains(searchQuery);
+                  }).toList();
+
+                  return ListView.builder(
+                    shrinkWrap: true, // Required for nesting in ScrollView
+                    itemCount: filteredClients.length,
+                    itemBuilder: (context, index) {
+                      final clientData =
+                          filteredClients[index].data() as Map<String, dynamic>;
+                      final clientId = filteredClients[index].id;
+
+                      // Check the status field (default: false)
+                      final isDelivered = clientData['status'] ?? false;
+                      // final totalWeight = clientData['total_weight'] ?? 0;
+                      Timestamp createdAt = clientData['created_at'];
+                      Timestamp modifiedAt = clientData['modified_at'];
+
+                      final hour = createdAt.toDate().hour;
+                      final minute = createdAt.toDate().minute;
+                      final day = createdAt.toDate().day;
+                      final month = createdAt.toDate().month;
+                      final year = createdAt.toDate().year;
+
+                      //*  TO know when the packet was taken
+
+                      final hour1 = modifiedAt.toDate().hour;
+                      final minute1 = modifiedAt.toDate().minute;
+                      final day1 = modifiedAt.toDate().day;
+                      final month1 = modifiedAt.toDate().month;
+                      final year1 = modifiedAt.toDate().year;
+                      final months = [
+                        'Empty',
+                        'Janvier',
+                        'Février',
+                        'Mars',
+                        'Avril',
+                        'Mai',
+                        'Juin',
+                        'Juillet',
+                        'Aout',
+                        'Septembre',
+                        'Octobre',
+                        'Novembre',
+                        'Decembre'
+                      ];
+
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Card(
+                          child: ListTile(
+                            dense: true,
+                            title: Table(
+                              border: TableBorder.all(color: Colors.white30),
+                              children: [
+                                TableRow(
+                                  children: [
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          '${clientData['lta_number']}',
+                                          style: kTextStyleNormal,
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text('${clientData['name']}'),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                            '$day ${months[month]} $year à ${hour}h${minute}min'),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                            '$day1 ${months[month1]} $year1 à ${hour1}h${minute1}min'),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        isDelivered
+                                            ? 'Livrer'
+                                            : 'En cours de livraison', // Display status based on `status`
+                                        style: TextStyle(
+                                          color: isDelivered
+                                              ? Colors.green
+                                              : Colors.orange,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            subtitle: Text(
+                              '${clientData['total_to_pay']}\$',
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: kBlueColor,
+                              ),
+                            ),
+                            onTap: () => _showProductsDialog(context, clientId),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
