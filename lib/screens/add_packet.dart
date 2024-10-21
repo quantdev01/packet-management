@@ -283,7 +283,7 @@ class _AddPacketState extends State<AddPacket> {
               Column(children: packetsList),
               const SizedBox(height: 30),
               Text(
-                'Total à payer : ${fullTotal.toStringAsFixed(1)}',
+                'Total à payer : ${fullTotal.toStringAsFixed(1)}\$',
                 style: TextStyle(
                   fontSize: 40,
                 ),
