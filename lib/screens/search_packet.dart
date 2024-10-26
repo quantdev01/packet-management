@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:entree_sortie/screens/user_login.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchPacket extends StatefulWidget {
@@ -15,6 +18,7 @@ class SearchPacket extends StatefulWidget {
 class _SearchPacketState extends State<SearchPacket> {
   TextEditingController controllerSearch = TextEditingController();
   String searchQuery = '';
+  String labelKg = '';
 
   @override
   Widget build(BuildContext context) {
@@ -359,6 +363,9 @@ class _SearchPacketState extends State<SearchPacket> {
   void _showEditWeightDialog(BuildContext context, String clientId,
       String productId, double currentWeight, double currentPrice) {
     final weightController = TextEditingController();
+    setState(() {
+      labelKg = 'Poid à retirer (KG)';
+    });
 
     showDialog(
       context: context,
@@ -369,45 +376,64 @@ class _SearchPacketState extends State<SearchPacket> {
             controller: weightController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: "Poid à retirer (KG)",
+              labelText: labelKg,
               hintText: '0.0',
             ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                if (double.parse(weightController.text) <= currentWeight) {
-                  double newWeight =
-                      currentWeight - double.parse(weightController.text);
-                  double newTotalPrice =
-                      currentPrice / currentWeight * newWeight;
-                  // Update the product weight and recalculate price
-                  FirebaseFirestore.instance
-                      .collection('clients')
-                      .doc(clientId)
-                      .collection('products')
-                      .doc(productId)
-                      .update({
-                    'weight': newWeight,
-                    'total_price': double.parse(
-                      newTotalPrice.toStringAsFixed(1),
-                    ),
-                    // .toStringAsFixed(1),
-                  });
+                try {
+                  if (double.parse(weightController.text) <= currentWeight) {
+                    double newWeight =
+                        currentWeight - double.parse(weightController.text);
+                    double newTotalPrice =
+                        currentPrice / currentWeight * newWeight;
+                    if (currentWeight == 0) {
+                      newTotalPrice = 0;
+                    }
+                    // Update the product weight and recalculate price
+                    FirebaseFirestore.instance
+                        .collection('clients')
+                        .doc(clientId)
+                        .collection('products')
+                        .doc(productId)
+                        .update({
+                      'weight': newWeight,
+                      'total_price': double.parse(
+                        newTotalPrice.toStringAsFixed(1),
+                      ),
+                      // .toStringAsFixed(1),
+                    });
 
-                  // Recalculate the total weight and total to pay for the client
-                  _recalculateClientTotal(clientId);
+                    // Recalculate the total weight and total to pay for the client
+                    _recalculateClientTotal(clientId);
 
-                  Navigator.of(context).pop();
-                } else {
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('Poid à retirer supérieur au poid du colis'),
+                        backgroundColor: Colors.red, // Warning color
+                        duration: Duration(seconds: 3), // Duration of SnackBar
+                      ),
+                    );
+                    setState(() {
+                      labelKg = 'Poid à retirer supérieur au poid du colis';
+                    });
+                  }
+                } on FormatException catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content:
-                          Text('Poid à retirer supérieur au poid du colis'),
+                      content: Text('Entrer un nombre'),
                       backgroundColor: Colors.red, // Warning color
                       duration: Duration(seconds: 3), // Duration of SnackBar
                     ),
                   );
+                  log('This happend $e');
+                } on Exception catch (e) {
+                  log('This excepction happend $e');
                 }
               },
               child: const Text('Retirer'),
@@ -436,7 +462,7 @@ class _SearchPacketState extends State<SearchPacket> {
     for (var product in productsSnapshot.docs) {
       final productData = product.data();
       totalWeight += productData['weight'];
-      totalToPay += productData['total_price'];
+      totalToPay += num.parse(productData['total_price']);
     }
 
     // Update the client document with the recalculated totals

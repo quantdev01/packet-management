@@ -80,7 +80,7 @@ class _AddPacketState extends State<AddPacket> {
     super.initState();
   }
 
-  Widget addPacket(String name, double weight) {
+  Widget addPacket(String name, double total) {
     invoiceData = {
       "title": "Association Kindu Maendeleo",
       "sub_title": "A K M",
@@ -98,7 +98,7 @@ class _AddPacketState extends State<AddPacket> {
         ),
         SizedBox(width: 20),
         Text(
-          '${weight.toStringAsFixed(1)} KG',
+          '${total.toStringAsFixed(1)}\$',
           style: TextStyle(
             fontSize: kSizeTextBox,
           ),
@@ -199,7 +199,7 @@ class _AddPacketState extends State<AddPacket> {
                 textSize: kSizeTextBox,
                 isPassword: false,
                 icon: FontAwesomeIcons.calculator,
-                hintText: 'Nombre colis',
+                hintText: 'Nombre des colis',
               ),
               const SizedBox(height: 30),
               myTextField(
@@ -292,78 +292,104 @@ class _AddPacketState extends State<AddPacket> {
 
               GestureDetector(
                 onTap: () async {
-                  final weight = double.parse(controllerTotalWeight.text);
-                  final ltaPrice = double.parse(controllerPriceForWeight.text);
+                  try {
+                    final weight = double.parse(controllerTotalWeight.text);
+                    final ltaPrice =
+                        double.parse(controllerPriceForWeight.text);
 
-                  double credit = 0;
-                  if (controllerCredit.text.isEmpty) {
-                    credit = 0;
-                  } else {
-                    credit = double.parse(controllerCredit.text);
-                  }
+                    double credit = 0;
 
-                  final packetName = controllerPacketName.text;
-
-                  final packetNumber =
-                      double.parse(controllerPacketNumber.text);
-                  double fechedTotal = await instance.getTotal(clientName);
-                  log('Total to pay here we go $fechedTotal');
-                  total = weight * ltaPrice + 1 + credit;
-
-                  packetsListClient.addAll({
-                    "name": packetName,
-                    "weight": weight,
-                    "lta_price": ltaPrice,
-                    "nombres": packetNumber,
-                    "emprunt_prix": credit,
-                    "total_price": total.toStringAsFixed(1),
-                  });
-                  log('ToTal value $fullTotal');
-
-                  setState(() {
-                    if (fullTotal == 0) {
-                      fullTotal = total + fechedTotal;
+                    if (controllerCredit.text.isEmpty) {
+                      credit = 0;
                     } else {
-                      fullTotal += total + fechedTotal;
+                      credit = double.parse(controllerCredit.text);
                     }
 
-                    if (controllerPacketName.text != '' &&
-                        controllerTotalWeight.text != '') {
-                      packetsList.add(
-                        addPacket(
-                          controllerPacketName.text,
-                          total,
-                        ),
-                      );
+                    double numberOfProduct = 0;
+                    if (controllerPacketNumber.text.isEmpty) {
+                      numberOfProduct = 1;
+                    } else {
+                      numberOfProduct =
+                          double.parse(controllerPacketNumber.text);
                     }
-                    log('Colis list');
-                    log(packetsListClient.toString());
-                  });
-                  //* Adding to firestore db
+                    final packetName = controllerPacketName.text;
 
-                  firebaseService.registerClient(
-                    clientName: clientName,
-                    ltaNumber: ltaNumber,
-                    totalToPay: fullTotal.toStringAsFixed(1),
-                  );
+                    final packetNumber =
+                        double.parse(controllerPacketNumber.text);
+                    double fechedTotal = await instance.getTotal(clientName);
+                    log('Total to pay here we go $fechedTotal');
+                    total = ((weight * ltaPrice) + (1 + credit));
 
-                  firebaseService.addProductToClient(
-                    packetsListClient,
-                    clientName,
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Enregistrez avec success'),
-                      backgroundColor: Colors.green, // Warning color
-                      duration: Duration(seconds: 2), // Duration of SnackBar
-                    ),
-                  );
-                  //Flushing the textfields
+                    packetsListClient.addAll({
+                      "name": packetName,
+                      "weight": weight,
+                      "lta_price": ltaPrice,
+                      "nombres": packetNumber,
+                      "emprunt_prix": credit,
+                      "total_price": total.toStringAsFixed(1),
+                    });
+                    log('ToTal value $fullTotal');
 
-                  controllerPacketName.text = '';
-                  controllerPacketNumber.text = '';
-                  controllerPriceForWeight.text = '';
-                  controllerTotalWeight.text = '';
+                    setState(() {
+                      fullTotal = total + fechedTotal;
+                      // } else {
+                      //   fullTotal = total + fechedTotal;
+                      // }
+
+                      if (controllerPacketName.text != '' &&
+                          controllerTotalWeight.text != '') {
+                        packetsList.add(
+                          addPacket(
+                            controllerPacketName.text,
+                            total,
+                          ),
+                        );
+                      }
+                      log('Colis list');
+                      log(packetsListClient.toString());
+                    });
+                    //* Adding to firestore db
+
+                    firebaseService.registerClient(
+                      clientName: clientName,
+                      ltaNumber: ltaNumber,
+                      totalToPay: fullTotal.toStringAsFixed(1),
+                    );
+
+                    firebaseService.addProductToClient(
+                      packetsListClient,
+                      clientName,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Enregistrez avec success'),
+                        backgroundColor: Colors.green, // Warning color
+                        duration: Duration(seconds: 2), // Duration of SnackBar
+                      ),
+                    );
+                    //* Flushing the textfields
+
+                    controllerPacketName.text = '';
+                    controllerPacketNumber.text = '';
+                    controllerPriceForWeight.text = '';
+                    controllerTotalWeight.text = '';
+                  } on FormatException catch (_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Entrez les nombres correctement'),
+                        backgroundColor: Colors.red, // Warning color
+                        duration: Duration(seconds: 2), // Duration of SnackBar
+                      ),
+                    );
+                  } on Exception catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('$e une erreur es survenue'),
+                        backgroundColor: Colors.red, // Warning color
+                        duration: Duration(seconds: 2), // Duration of SnackBar
+                      ),
+                    );
+                  }
                 },
                 child: myButton(
                   buttonColor: kBlueColor,

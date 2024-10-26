@@ -1,8 +1,6 @@
 import 'package:entree_sortie/firebase_options.dart';
-
 import 'package:entree_sortie/screens/home_or_mobile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -11,7 +9,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const Main());
+  runApp(
+    const Main(),
+  );
 }
 
 class Main extends StatelessWidget {
