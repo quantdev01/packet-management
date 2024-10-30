@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:entree_sortie/screens/register_packet.dart';
@@ -305,7 +307,9 @@ class _AddPacketState extends State<AddPacket> {
                       credit = double.parse(controllerCredit.text);
                     }
 
+                    // ignore: unused_local_variable
                     double numberOfProduct = 0;
+
                     if (controllerPacketNumber.text.isEmpty) {
                       numberOfProduct = 1;
                     } else {
