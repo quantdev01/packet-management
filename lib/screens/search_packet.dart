@@ -462,7 +462,13 @@ class _SearchPacketState extends State<SearchPacket> {
     for (var product in productsSnapshot.docs) {
       final productData = product.data();
       totalWeight += productData['weight'];
-      totalToPay += num.parse(productData['total_price']);
+      // totalToPay += productData['total_price'];
+      if (productData['total_price'] is String) {
+        totalToPay += num.parse(productData['total_price']);
+      } else if (productData['total_price'] is double ||
+          productData['total_price'] is int) {
+        totalToPay += productData['total_price'];
+      }
     }
 
     // Update the client document with the recalculated totals
