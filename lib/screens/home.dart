@@ -25,8 +25,15 @@ class Home extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  title(text: 'Agence Kindu Maendeleo\nA K M'),
+                  // title(text: 'Agence Kindu Maendeleo\nA K M'),
+                  // const SizedBox(height: 30),
+                  Image.asset(
+                    'assets/images/logo3.png',
+                    height: 150,
+                  ),
                   const SizedBox(height: 30),
+                  const SizedBox(height: 30),
+
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
