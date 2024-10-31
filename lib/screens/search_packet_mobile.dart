@@ -20,6 +20,7 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -154,92 +155,94 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                       ltaNumber.contains(searchQuery);
                 }).toList();
 
-                return ListView.builder(
-                  shrinkWrap: true, // Required for nesting in ScrollView
-                  itemCount: filteredClients.length,
-                  itemBuilder: (context, index) {
-                    final clientData =
-                        filteredClients[index].data() as Map<String, dynamic>;
+                return SingleChildScrollView(
+                  child: ListView.builder(
+                    shrinkWrap: true, // Required for nesting in ScrollView
+                    itemCount: filteredClients.length,
+                    itemBuilder: (context, index) {
+                      final clientData =
+                          filteredClients[index].data() as Map<String, dynamic>;
 
-                    final clientId = filteredClients[index].id;
+                      final clientId = filteredClients[index].id;
 
-                    // Check the status field (default: false)
-                    final isDelivered = clientData['status'] ?? false;
-                    // final totalWeight = clientData['total_weight'] ?? 0;
+                      // Check the status field (default: false)
+                      final isDelivered = clientData['status'] ?? false;
+                      // final totalWeight = clientData['total_weight'] ?? 0;
 
-                    Timestamp createdAt = clientData['created_at'];
-                    Timestamp modifiedAt = clientData['modified_at'];
+                      Timestamp createdAt = clientData['created_at'];
+                      Timestamp modifiedAt = clientData['modified_at'];
 
-                    final hour = createdAt.toDate().hour;
-                    final minute = createdAt.toDate().minute;
-                    final day = createdAt.toDate().day;
-                    final month = createdAt.toDate().month;
+                      final hour = createdAt.toDate().hour;
+                      final minute = createdAt.toDate().minute;
+                      final day = createdAt.toDate().day;
+                      final month = createdAt.toDate().month;
 
-                    //* TO know when the packet was taken
+                      //* TO know when the packet was taken
 
-                    final hour1 = modifiedAt.toDate().hour;
-                    final minute1 = modifiedAt.toDate().minute;
-                    final day1 = modifiedAt.toDate().day;
-                    final month1 = modifiedAt.toDate().month;
+                      final hour1 = modifiedAt.toDate().hour;
+                      final minute1 = modifiedAt.toDate().minute;
+                      final day1 = modifiedAt.toDate().day;
+                      final month1 = modifiedAt.toDate().month;
 
-                    return Card(
-                      child: ListTile(
-                        dense: true,
-                        title: Table(
-                          border: TableBorder.all(color: Colors.white30),
-                          children: [
-                            TableRow(
-                              children: [
-                                TableCell(
-                                  verticalAlignment:
-                                      TableCellVerticalAlignment.middle,
-                                  child: Text(
-                                    '${clientData['name']}',
-                                    style: kTextStyleMobile,
+                      return Card(
+                        child: ListTile(
+                          dense: true,
+                          title: Table(
+                            border: TableBorder.all(color: Colors.white30),
+                            children: [
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Text(
+                                      '${clientData['name']}',
+                                      style: kTextStyleMobile,
+                                    ),
                                   ),
-                                ),
-                                TableCell(
-                                  verticalAlignment:
-                                      TableCellVerticalAlignment.middle,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Text('$day/$month $hour:$minute'),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text('$day/$month $hour:$minute'),
+                                    ),
                                   ),
-                                ),
-                                TableCell(
-                                  verticalAlignment:
-                                      TableCellVerticalAlignment.middle,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child:
-                                        Text('$day1/$month1 $hour1:$minute1'),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child:
+                                          Text('$day1/$month1 $hour1:$minute1'),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        subtitle: Text(
-                          '${clientData['total_to_pay']}\$',
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: kBlueColor,
-                          ),
-                        ),
-                        trailing: isDelivered
-                            ? Icon(
-                                FontAwesomeIcons.circleCheck,
-                                color: Colors.green,
+                                ],
                               )
-                            : Icon(
-                                FontAwesomeIcons.spinner,
-                                color: Colors.orange,
-                              ),
-                        onTap: () => _showProductsDialog(context, clientId),
-                      ),
-                    );
-                  },
+                            ],
+                          ),
+                          subtitle: Text(
+                            '${clientData['total_to_pay']}\$',
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: kBlueColor,
+                            ),
+                          ),
+                          trailing: isDelivered
+                              ? Icon(
+                                  FontAwesomeIcons.circleCheck,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  FontAwesomeIcons.spinner,
+                                  color: Colors.orange,
+                                ),
+                          onTap: () => _showProductsDialog(context, clientId),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),
