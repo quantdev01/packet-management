@@ -1,16 +1,36 @@
-# entree_sortie
+# 1. Project Title
+Package Management System with Firebase (Flutter Desktop & Android)
 
-A new Flutter project.
+# 2. Project Description
+This is a desktop and Android app developed in Flutter to streamline package management and retrieval using Firebase Firestore as a backend. The application enables users to register clients sending packages, document package details, and facilitate package retrieval at another location. Admins can monitor package statuses, making it easier to manage and verify client package records from any device.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# 3. Features
+Client Registration: Register client names and package details.
+Package Tracking: View, update, and track package statuses (pending, retrieved).
+Multi-Platform Access: Flutter desktop app for on-site use, with an Android version for remote monitoring by admins.
+Firestore Integration: Secure and reliable data storage using Firebase Firestore.
+# 4. Architecture and Technologies
+Flutter: For cross-platform development (desktop and Android).
+Firebase Firestore: To store and manage client and package data.
+Firebase Authentication: Optional, for user-based access control if admins need secure login.
+# 5. Installation and Setup
+Prerequisites: Flutter SDK, Firebase account, Firestore setup.
+# Clone the Repository:
+bash
+Copy code
+```
+git clone https://github.com/yourusername/PackageManagementApp.git
+```
+Set Up Firebase:
+Configure Firebase Firestore in the Firebase console.
+Download google-services.json for Android and add it to your project.
+Run the App:
+bash
+Copy code
+```
+flutter run
+```
+# 6. Usage
+Register a Client: On the desktop app, fill out client and package details, which are stored in Firestore.
+Retrieve a Package: Search for a client’s name in the app to update the status as "retrieved."
+Admin Access: Use the Android app to view the status of all packages and filter by retrieval status.
