@@ -136,9 +136,10 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
+                return Expanded(
+                    child: Center(
                   child: CircularProgressIndicator(),
-                );
+                ));
               }
 
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -269,16 +270,17 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
             builder: (context, productSnapshot) {
               if (productSnapshot.connectionState == ConnectionState.waiting) {
                 return SizedBox(
-                  height: 30,
                   width: 200,
                   child: ListView.builder(
-                    itemCount: productSnapshot.data!.size,
+                    itemCount: productSnapshot.data?.docs.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) => Shimmer.fromColors(
                       baseColor: Colors.grey.shade300,
                       highlightColor: Colors.grey.shade400,
                       child: ListTile(
                         title: Container(
+                          height: 20,
+                          width: 300,
                           color: Colors.grey.shade300,
                         ),
                       ),
