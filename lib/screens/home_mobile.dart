@@ -1,13 +1,17 @@
 import 'package:entree_sortie/screens/admin_login_mobile.dart';
+import 'package:entree_sortie/screens/search_packet_mobile.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class HomeMobile extends StatelessWidget {
   const HomeMobile({super.key});
 
   @override
   Widget build(BuildContext context) {
+    GetStorage box = GetStorage();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -44,33 +48,22 @@ class HomeMobile extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => const UserLogin(),
-                  //       ),
-                  //     );
-                  //   },
-                  //   child: myButton(
-                  //     buttonColor: kBlueColor,
-                  //     textColor: kWhiteColor,
-                  //     text: 'Utilisateur',
-                  //     height: kBoxHeightMobile,
-                  //     width: kBoxWidhtMobile,
-                  //     textSize: kSizeTextBoxMobile,
-                  //   ),
-                  // ),
                   const SizedBox(height: 30),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AdminLoginMobile()),
-                      );
+                      if (box.read('isLogin') == true) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SearchPacketMobile()),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AdminLoginMobile()),
+                        );
+                      }
                     },
                     child: myButton(
                       buttonColor: kBlueColor,

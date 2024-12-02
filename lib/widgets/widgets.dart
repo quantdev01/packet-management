@@ -2,6 +2,7 @@ import 'package:entree_sortie/screens/home_or_mobile_screen.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shimmer/shimmer.dart';
 
 //* Custom button
@@ -181,16 +182,14 @@ Widget backToPreviousMobile(BuildContext context) {
 
 //* Shimmer effect
 
-Widget whileWaiting() => SizedBox(
-      width: 200.0,
-      height: 100.0,
-      child: Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade400,
-          child: Container(
-            height: 30,
-            color: Colors.grey.shade300,
-          )),
+Widget whileWaiting() => Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade400,
+      child: Container(
+        height: 30,
+        width: 200,
+        color: Colors.grey.shade300,
+      ),
     );
 
 //* home button
@@ -218,6 +217,7 @@ GestureDetector goHomeButton(BuildContext context) {
 //* home button
 
 GestureDetector goHomeButtonMobile(BuildContext context) {
+  GetStorage box = GetStorage();
   return GestureDetector(
     onTap: () {
       Navigator.pushReplacement(
@@ -226,6 +226,7 @@ GestureDetector goHomeButtonMobile(BuildContext context) {
           builder: (context) => const HomeOrMobileScreen(),
         ),
       );
+      box.erase();
     },
     child: Padding(
       padding: const EdgeInsets.only(right: 10),

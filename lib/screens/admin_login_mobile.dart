@@ -3,6 +3,7 @@ import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AdminLoginMobile extends StatefulWidget {
   const AdminLoginMobile({super.key});
@@ -15,6 +16,7 @@ class _AdminLoginMobileState extends State<AdminLoginMobile> {
   TextEditingController controllerUsername = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
   bool isPassword = true;
+  GetStorage box = GetStorage();
 
   Widget myTextFieldPassword({
     required String hintText,
@@ -130,15 +132,6 @@ class _AdminLoginMobileState extends State<AdminLoginMobile> {
                     controller: controllerUsername,
                   ),
                   const SizedBox(height: 30),
-                  // myTextField(
-                  //   hintText: 'Mot de passe',
-                  //   icon: FontAwesomeIcons.lock,
-                  //   isPassword: true,
-                  //   height: kBoxHeightMobile,
-                  //   width: kBoxWidhtMobile,
-                  //   textSize: kSizeTextBoxMobile,
-                  //   controller: controllerPassword,
-                  // ),
 
                   myTextFieldPassword(
                     controller: controllerPassword,
@@ -161,12 +154,14 @@ class _AdminLoginMobileState extends State<AdminLoginMobile> {
                                 Duration(seconds: 1), // Duration of SnackBar
                           ),
                         );
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const SearchPacketMobile(),
                           ),
                         );
+                        box.write('isLogin', true);
                       } else if (controllerUsername.text == '' ||
                           controllerPassword.text == '') {
                         ScaffoldMessenger.of(context).showSnackBar(

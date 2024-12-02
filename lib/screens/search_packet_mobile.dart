@@ -4,6 +4,7 @@ import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SearchPacketMobile extends StatefulWidget {
   const SearchPacketMobile({super.key});
@@ -267,7 +268,23 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                 .snapshots(),
             builder: (context, productSnapshot) {
               if (productSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: whileWaiting());
+                return SizedBox(
+                  height: 30,
+                  width: 200,
+                  child: ListView.builder(
+                    itemCount: productSnapshot.data!.size,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade400,
+                      child: ListTile(
+                        title: Container(
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
               }
 
               if (!productSnapshot.hasData ||
@@ -286,8 +303,6 @@ class _SearchPacketMobileState extends State<SearchPacketMobile> {
                     final productData =
                         products[index].data() as Map<String, dynamic>;
                     final productId = products[index].id;
-                    // final weightController = TextEditingController(
-                    //     text: productData['weight'].toString());
 
                     return ListTile(
                       title: Text(productData['name']),
