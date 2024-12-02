@@ -1,4 +1,5 @@
 import 'package:entree_sortie/screens/admin_login_mobile.dart';
+import 'package:entree_sortie/services/firebase_messaging_service.dart';
 import 'package:entree_sortie/utils/constant.dart';
 import 'package:entree_sortie/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,12 @@ class HomeMobile extends StatelessWidget {
                   const SizedBox(height: 30),
                   GestureDetector(
                     onTap: () {
+                      FirebaseMessagingService messagingService =
+                          FirebaseMessagingService();
+
+                      messagingService.initialize();
+
+                      messagingService.getToken();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
