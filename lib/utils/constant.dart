@@ -13,7 +13,7 @@ kTextStyleButtons(
     );
 const kSizeTextBox = 20.0;
 const kSizeNormalText = 35.0;
-const kSizeTextBoxMobile = kSizeTextBox - 5.0;
+const kSizeTextBoxMobile = kSizeTextBox - 2.5;
 const kTextStyleNormal = TextStyle(
   fontSize: 25,
   color: Colors.black87,
@@ -39,7 +39,7 @@ const double kSizedBoxHeight = 20;
 
 const double kBoxHeight = 86 - 10;
 const double kBoxWidht = 492 - 10;
-const double kBoxHeightMobile = kBoxHeight - 30;
+const double kBoxHeightMobile = kBoxHeight - 20;
 const double kBoxWidhtMobile = kBoxWidht - 200;
 
 const String kBackgroundImage = 'assets/images/background1.jpg';

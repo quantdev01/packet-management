@@ -63,11 +63,11 @@ Widget myTextField({
       Text(
         hintText,
         style: const TextStyle(
-          fontSize: 25,
-          color: Colors.black54,
+          fontSize: 20,
+          color: kWhiteColor,
         ),
       ),
-      const SizedBox(height: 10),
+      const SizedBox(height: 15),
       Container(
         height: height,
         width: width,

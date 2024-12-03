@@ -31,8 +31,8 @@ class _AdminLoginMobileState extends State<AdminLoginMobile> {
           Text(
             hintText,
             style: const TextStyle(
-              fontSize: 25,
-              color: Colors.black54,
+              fontSize: 20,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 10),
@@ -120,8 +120,6 @@ class _AdminLoginMobileState extends State<AdminLoginMobile> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // title('Se connecter/Admin'),
-                  const SizedBox(height: 30),
                   myTextField(
                     hintText: 'Nom d\'utilisateur',
                     icon: FontAwesomeIcons.circleUser,
@@ -131,8 +129,7 @@ class _AdminLoginMobileState extends State<AdminLoginMobile> {
                     textSize: kSizeTextBoxMobile,
                     controller: controllerUsername,
                   ),
-                  const SizedBox(height: 30),
-
+                  const SizedBox(height: 20),
                   myTextFieldPassword(
                     controller: controllerPassword,
                     height: kBoxHeightMobile,
