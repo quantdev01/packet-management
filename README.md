@@ -1,7 +1,7 @@
 # Packet management
 Package Management System with Firebase (Flutter Desktop & Android)
 # Demo
--> https://drive.google.com/file/d/167v1Hxt7MzIQsXeygzQHZuKxSjwZXDtK/view?usp=drivesdk
+-> https://drive.google.com/file/d/1io8rSZgxnIX7hjMRahJiYcu4TwkywxE3/view?usp=drive_link
 ## Description
 This is a desktop and Android app developed in Flutter to streamline package management and retrieval using Firebase Firestore as a backend. The application enables users to register clients sending packages, document package details, and facilitate package retrieval at another location. Admins can monitor package statuses, making it easier to manage and verify client package records from any device.
 
